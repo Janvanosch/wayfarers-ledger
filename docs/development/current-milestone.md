@@ -113,3 +113,17 @@ Afterwards, begin implementation of the design system.
 This document should always describe the current development focus.
 
 When the milestone changes, update this document before starting the next major phase.
+
+## Current Milestone
+
+✅ Project foundation
+
+- [x] Clean Vite project
+- [x] Routing
+- [x] Folder architecture
+- [x] Global styling
+- [x] Design tokens
+
+⬜ Reusable UI components
+⬜ Home page layout
+⬜ Journey feature foundation

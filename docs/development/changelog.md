@@ -63,3 +63,14 @@ Security-related improvements.
 The changelog is intended for humans.
 
 Keep entries brief, clear and focused on meaningful changes.
+
+## 2026-07-24
+
+### Added
+- Global styling architecture
+- Design token system
+- UI component folder structure
+
+### Removed
+- Vite starter CSS
+- Vite demo assets

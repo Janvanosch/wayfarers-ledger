@@ -1,0 +1,25 @@
+.wl-heading {
+  margin: 0;
+  font-family: var(--font-heading);
+  font-weight: var(--font-weight-bold);
+  line-height: var(--line-height-tight);
+  color: var(--color-text);
+}
+
+.wl-heading-1 {
+  font-size: var(--font-size-3xl);
+}
+
+.wl-heading-2 {
+  font-size: var(--font-size-2xl);
+}
+
+.wl-heading-3 {
+  font-size: var(--font-size-xl);
+}
+
+.wl-heading-4,
+.wl-heading-5,
+.wl-heading-6 {
+  font-size: var(--font-size-lg);
+}

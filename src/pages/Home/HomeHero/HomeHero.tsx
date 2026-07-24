@@ -1,13 +1,13 @@
 import "./HomeHero.css";
 
+import Heading from "../../../components/ui/Heading";
+
 export default function HomeHero() {
   return (
     <section className="home-hero">
-      <h2>Where to today, Wayfarer?</h2>
+      <Heading level={1}>Where to today, Wayfarer?</Heading>
 
-      <p>
-        Welcome back to your personal festival ledger.
-      </p>
+      <p>Welcome back to your personal festival ledger.</p>
     </section>
   );
 }
