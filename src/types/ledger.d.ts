@@ -25,9 +25,9 @@ export type GearCategory =
   | "Clothing"
   | "Armour"
   | "Accessories"
-  | "Equipment"
-  | "Camping"
-  | "Maintenance";
+  | "Weaponry"
+  | "Utilitarian"
+  | "Maintenance & Storage";
 
 export interface Gear {
   id: string;

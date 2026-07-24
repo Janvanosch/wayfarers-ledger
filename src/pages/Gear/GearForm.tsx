@@ -15,9 +15,9 @@ const CATEGORIES: GearCategory[] = [
   "Clothing",
   "Armour",
   "Accessories",
-  "Equipment",
-  "Camping",
-  "Maintenance",
+  "Weaponry",
+  "Utilitarian",
+  "Maintenance & Storage",
 ];
 
 interface GearFormProps {
