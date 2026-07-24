@@ -1,4 +1,4 @@
-const { createRepository } = require("./repository.cjs");
+const { createRepository, createJoinTable } = require("./repository.cjs");
 const database = require("./database.cjs");
 const { generateId } = require("./ids.cjs");
 
@@ -67,49 +67,8 @@ const festivals = createRepository("festivals", "festival", [
 
 // gear_festivals is a plain many-to-many join table (no soft delete, no
 // single id), so it doesn't fit the generic repository pattern above.
-const gearFestivals = {
-  link(gearId, festivalId) {
-    const db = database.getDb();
-    db.run(
-      "INSERT OR IGNORE INTO gear_festivals (gear_id, festival_id, created_at) VALUES (?, ?, ?)",
-      [gearId, festivalId, new Date().toISOString()],
-    );
-    database.save();
-  },
-
-  unlink(gearId, festivalId) {
-    const db = database.getDb();
-    db.run(
-      "DELETE FROM gear_festivals WHERE gear_id = ? AND festival_id = ?",
-      [gearId, festivalId],
-    );
-    database.save();
-  },
-
-  festivalIdsForGear(gearId) {
-    const db = database.getDb();
-    const stmt = db.prepare(
-      "SELECT festival_id FROM gear_festivals WHERE gear_id = :gearId",
-    );
-    stmt.bind({ ":gearId": gearId });
-    const ids = [];
-    while (stmt.step()) ids.push(stmt.getAsObject().festival_id);
-    stmt.free();
-    return ids;
-  },
-
-  gearIdsForFestival(festivalId) {
-    const db = database.getDb();
-    const stmt = db.prepare(
-      "SELECT gear_id FROM gear_festivals WHERE festival_id = :festivalId",
-    );
-    stmt.bind({ ":festivalId": festivalId });
-    const ids = [];
-    while (stmt.step()) ids.push(stmt.getAsObject().gear_id);
-    stmt.free();
-    return ids;
-  },
-};
+// leftIdsFor(festivalId) -> gear_ids, rightIdsFor(gearId) -> festival_ids.
+const gearFestivals = createJoinTable("gear_festivals", "gear_id", "festival_id");
 
 const outfits = createRepository("outfits", "outfit", [
   { js: "id", db: "id" },
@@ -179,6 +138,32 @@ const outfitVersions = {
   },
 };
 
+const journalEntries = createRepository("journal_entries", "journalentry", [
+  { js: "id", db: "id" },
+  { js: "title", db: "title" },
+  { js: "body", db: "body" },
+  { js: "festivalId", db: "festival_id" },
+  { js: "createdAt", db: "created_at" },
+  { js: "updatedAt", db: "updated_at" },
+  { js: "deletedAt", db: "deleted_at" },
+]);
+
+const journalEntryPhotos = createJoinTable(
+  "journal_entry_photos",
+  "journal_entry_id",
+  "photo_id",
+);
+const journalEntryGear = createJoinTable(
+  "journal_entry_gear",
+  "journal_entry_id",
+  "gear_id",
+);
+const journalEntryOutfits = createJoinTable(
+  "journal_entry_outfits",
+  "journal_entry_id",
+  "outfit_id",
+);
+
 module.exports = {
   wayfarers,
   photos,
@@ -188,4 +173,8 @@ module.exports = {
   gearFestivals,
   outfits,
   outfitVersions,
+  journalEntries,
+  journalEntryPhotos,
+  journalEntryGear,
+  journalEntryOutfits,
 };

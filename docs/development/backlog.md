@@ -43,8 +43,8 @@ The backlog is intentionally organised by functional area rather than priority.
 # Journey
 
 - [ ] Timeline
-- [ ] Journal Entries
-- [ ] Memories
+- [x] Journal Entries
+- [x] Memories (Journal Entries can tag specific Gear, Outfits, and Photos)
 - [ ] Experience Notes
 - [ ] Search Journey
 
@@ -78,7 +78,7 @@ The backlog is intentionally organised by functional area rather than priority.
 
 - [x] Festival Library
 - [x] Festival Details
-- [ ] Festival Journal
+- [x] Festival Journal (the "Memories" section on the Festival detail page)
 - [ ] Festival Gallery
 - [ ] Festival Timeline
 - [x] Weather Notes

@@ -134,6 +134,34 @@ export interface OutfitVersionFields {
   notes?: string | null;
 }
 
+export interface JournalPhoto {
+  id: string;
+  filename: string;
+}
+
+export interface JournalEntry {
+  id: string;
+  title: string | null;
+  body: string;
+  festivalId: string | null;
+  festivalName: string | null;
+  gear: Gear[];
+  outfits: Outfit[];
+  photos: JournalPhoto[];
+  createdAt: string;
+  updatedAt: string;
+  deletedAt: string | null;
+}
+
+export interface JournalEntryFields {
+  title?: string | null;
+  body: string;
+  festivalId?: string | null;
+  gearIds?: string[];
+  outfitIds?: string[];
+  photoPaths?: string[];
+}
+
 export interface LedgerApi {
   getStatus: () => Promise<LedgerStatus>;
   vault: {
@@ -177,6 +205,16 @@ export interface LedgerApi {
     ) => Promise<OutfitVersion>;
     versions: (id: string) => Promise<OutfitVersion[]>;
     currentGear: (id: string) => Promise<Gear[]>;
+  };
+  journal: {
+    list: () => Promise<JournalEntry[]>;
+    get: (id: string) => Promise<JournalEntry | null>;
+    listForFestival: (festivalId: string) => Promise<JournalEntry[]>;
+    create: (fields: JournalEntryFields) => Promise<JournalEntry>;
+    update: (
+      id: string,
+      fields: Partial<JournalEntryFields>,
+    ) => Promise<JournalEntry>;
   };
 }
 

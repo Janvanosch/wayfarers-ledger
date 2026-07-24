@@ -10,6 +10,10 @@ const {
   gearFestivals,
   outfits,
   outfitVersions,
+  journalEntries,
+  journalEntryPhotos,
+  journalEntryGear,
+  journalEntryOutfits,
 } = require("./repositories.cjs");
 const logger = require("./logger.cjs");
 
@@ -67,6 +71,48 @@ function resolveGearSummaries(gearIds) {
 
 function withVersionGear(version) {
   return { ...version, gear: resolveGearSummaries(version.gearIds) };
+}
+
+function resolveOutfitSummaries(outfitIds) {
+  return outfitIds
+    .map((outfitId) => outfits.findById(outfitId))
+    .filter(Boolean)
+    .map(withOutfitExtras);
+}
+
+function withJournalEntryExtras(entry) {
+  if (!entry) return entry;
+  const festival = entry.festivalId ? festivals.findById(entry.festivalId) : null;
+  const photoIds = journalEntryPhotos.rightIdsFor(entry.id);
+
+  return {
+    ...entry,
+    festivalName: festival ? festival.name : null,
+    gear: resolveGearSummaries(journalEntryGear.rightIdsFor(entry.id)),
+    outfits: resolveOutfitSummaries(journalEntryOutfits.rightIdsFor(entry.id)),
+    photos: photoIds
+      .map((photoId) => photos.findById(photoId))
+      .filter(Boolean)
+      .map((photo) => ({ id: photo.id, filename: photo.filename })),
+  };
+}
+
+function replaceLinks(joinTable, leftId, rightIds) {
+  const current = new Set(joinTable.rightIdsFor(leftId));
+  const next = new Set(rightIds ?? []);
+  for (const id of current) {
+    if (!next.has(id)) joinTable.unlink(leftId, id);
+  }
+  for (const id of next) {
+    if (!current.has(id)) joinTable.link(leftId, id);
+  }
+}
+
+function addJournalEntryPhotos(journalEntryId, photoPaths) {
+  for (const photoPath of photoPaths ?? []) {
+    const photoId = importPhotoIfProvided(photoPath);
+    if (photoId) journalEntryPhotos.link(journalEntryId, photoId);
+  }
 }
 
 function getCurrentWayfarer() {
@@ -197,7 +243,7 @@ function registerIpcHandlers(getWindow) {
   });
 
   ipcMain.handle("festivals:gearFor", (_event, festivalId) => {
-    const gearIds = new Set(gearFestivals.gearIdsForFestival(festivalId));
+    const gearIds = new Set(gearFestivals.leftIdsFor(festivalId));
     return gear
       .findAll()
       .filter((item) => gearIds.has(item.id))
@@ -205,7 +251,7 @@ function registerIpcHandlers(getWindow) {
   });
 
   ipcMain.handle("gear:festivalsFor", (_event, gearId) => {
-    const festivalIds = new Set(gearFestivals.festivalIdsForGear(gearId));
+    const festivalIds = new Set(gearFestivals.rightIdsFor(gearId));
     return festivals
       .findAll()
       .filter((item) => festivalIds.has(item.id))
@@ -267,6 +313,39 @@ function registerIpcHandlers(getWindow) {
     if (!outfit || outfit.currentVersion === 0) return [];
     const version = outfitVersions.findVersion(outfitId, outfit.currentVersion);
     return version ? resolveGearSummaries(version.gearIds) : [];
+  });
+
+  ipcMain.handle("journal:list", () =>
+    journalEntries.findAll().map(withJournalEntryExtras),
+  );
+
+  ipcMain.handle("journal:get", (_event, id) =>
+    withJournalEntryExtras(journalEntries.findById(id)),
+  );
+
+  ipcMain.handle("journal:listForFestival", (_event, festivalId) =>
+    journalEntries
+      .findAll()
+      .filter((entry) => entry.festivalId === festivalId)
+      .map(withJournalEntryExtras),
+  );
+
+  ipcMain.handle("journal:create", (_event, fields) => {
+    const { photoPaths, gearIds, outfitIds, ...rest } = fields;
+    const entry = journalEntries.create(rest);
+    addJournalEntryPhotos(entry.id, photoPaths);
+    replaceLinks(journalEntryGear, entry.id, gearIds);
+    replaceLinks(journalEntryOutfits, entry.id, outfitIds);
+    return withJournalEntryExtras(entry);
+  });
+
+  ipcMain.handle("journal:update", (_event, id, fields) => {
+    const { photoPaths, gearIds, outfitIds, ...rest } = fields;
+    const updated = journalEntries.update(id, rest);
+    addJournalEntryPhotos(id, photoPaths);
+    if (gearIds !== undefined) replaceLinks(journalEntryGear, id, gearIds);
+    if (outfitIds !== undefined) replaceLinks(journalEntryOutfits, id, outfitIds);
+    return withJournalEntryExtras(updated);
   });
 
   logger.info("IPC handlers registered");

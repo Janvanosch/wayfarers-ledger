@@ -45,4 +45,12 @@ contextBridge.exposeInMainWorld("ledger", {
     versions: (id) => ipcRenderer.invoke("outfits:versions", id),
     currentGear: (id) => ipcRenderer.invoke("outfits:currentGear", id),
   },
+  journal: {
+    list: () => ipcRenderer.invoke("journal:list"),
+    get: (id) => ipcRenderer.invoke("journal:get", id),
+    listForFestival: (festivalId) =>
+      ipcRenderer.invoke("journal:listForFestival", festivalId),
+    create: (fields) => ipcRenderer.invoke("journal:create", fields),
+    update: (id, fields) => ipcRenderer.invoke("journal:update", id, fields),
+  },
 });

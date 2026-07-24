@@ -7,10 +7,19 @@ import Heading from "../../components/ui/Heading";
 import Text from "../../components/ui/Text";
 import Stack from "../../components/ui/Stack";
 import Button from "../../components/ui/Button";
+import Card from "../../components/ui/Card";
 import Cover from "../../components/ui/Cover";
 import FestivalForm from "./FestivalForm";
+import JournalEntryForm from "./JournalEntryForm";
+import JournalEntryCard from "./JournalEntryCard";
 
-import type { Festival, FestivalFields, Gear } from "../../types/ledger";
+import type {
+  Festival,
+  FestivalFields,
+  Gear,
+  JournalEntry,
+  JournalEntryFields,
+} from "../../types/ledger";
 
 function formatDateRange(start: string | null, end: string | null) {
   if (!start && !end) return null;
@@ -28,12 +37,17 @@ export default function FestivalDetailPage() {
   const [editing, setEditing] = useState(false);
   const [busy, setBusy] = useState(false);
 
+  const [entries, setEntries] = useState<JournalEntry[]>([]);
+  const [showAddEntryForm, setShowAddEntryForm] = useState(false);
+  const [entryBusy, setEntryBusy] = useState(false);
+
   useEffect(() => {
     if (!id) return;
     window.ledger.festivals
       .get(id)
       .then((result) => setFestival(result ?? "not-found"));
     window.ledger.festivals.gearFor(id).then(setGearItems);
+    window.ledger.journal.listForFestival(id).then(setEntries);
   }, [id]);
 
   async function handleUpdate(fields: FestivalFields) {
@@ -43,6 +57,14 @@ export default function FestivalDetailPage() {
     setBusy(false);
     setFestival(updated);
     setEditing(false);
+  }
+
+  async function handleCreateEntry(fields: JournalEntryFields) {
+    setEntryBusy(true);
+    const created = await window.ledger.journal.create(fields);
+    setEntryBusy(false);
+    setShowAddEntryForm(false);
+    setEntries((current) => [created, ...current]);
   }
 
   if (festival === "loading") {
@@ -130,6 +152,42 @@ export default function FestivalDetailPage() {
                     </Link>
                   ))}
                 </div>
+              )}
+            </Stack>
+
+            <Stack gap={3}>
+              <Stack direction="row" justify="between" align="center">
+                <Heading level={3}>Memories</Heading>
+                {!showAddEntryForm && (
+                  <Button
+                    variant="primary"
+                    onClick={() => setShowAddEntryForm(true)}
+                  >
+                    + Add Entry
+                  </Button>
+                )}
+              </Stack>
+
+              {showAddEntryForm && (
+                <Card>
+                  <JournalEntryForm
+                    lockedFestivalId={festival.id}
+                    submitLabel="Save Entry"
+                    busy={entryBusy}
+                    onSubmit={handleCreateEntry}
+                    onCancel={() => setShowAddEntryForm(false)}
+                  />
+                </Card>
+              )}
+
+              {entries.length === 0 && !showAddEntryForm ? (
+                <Text muted>No memories written for this Festival yet.</Text>
+              ) : (
+                <Stack gap={3}>
+                  {entries.map((entry) => (
+                    <JournalEntryCard key={entry.id} entry={entry} />
+                  ))}
+                </Stack>
               )}
             </Stack>
           </>

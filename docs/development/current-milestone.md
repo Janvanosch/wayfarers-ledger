@@ -68,7 +68,7 @@ Phase 2 of the roadmap.
 - [x] Makers (their own entity, linked from Gear, with quick-create from the Gear form)
 - [x] Outfit Library, with real version history (Outfit = stable identity, Version = immutable snapshot of Gear + notes)
 - [x] Journey hub page (`/journey`) with a working Festival Library (list, detail, quick-capture create, edit) and Gear↔Festival "Seen at" linking
-- [ ] Journal Entries
+- [x] Journal Entries (title/body, optional Festival, tagged Gear/Outfits, multiple photos), reachable from the Journey hub or as a Festival's "Memories" section
 - [ ] Timeline
 - [ ] Basic Search
 - [ ] Global Capture (+) button
@@ -87,9 +87,12 @@ than a single-feature demo.
 
 # Current Focus
 
-Gear, Makers, Festivals, and Outfits (with version history) are all built
-and verified working end to end (real photos, real relationships, real
-persistence, real version snapshots).
+Gear, Makers, Festivals, Outfits (with version history), and Journal
+Entries are all built and verified working end to end (real photos, real
+relationships, real persistence, real version snapshots). A Journal Entry
+can tag specific Gear, Outfits, and multiple photos, and can be written
+either freely from the Journey hub or scoped to a specific Festival as its
+"Memories" section.
 
 A mobile phase has been agreed as the next major phase after Core Journey,
 since capturing memories while walking around a festival — not sitting at a
@@ -103,9 +106,11 @@ approach (see the Keeper Log for the reasoning).
 
 # Next Task
 
-Journal Entries and Timeline are the remaining pieces of the Journey hub.
-The global Capture (+) button (Chapter 4) is also still open, and is a
-natural candidate before or alongside starting the mobile phase.
+Timeline is the one remaining piece of the Journey hub, and needs a design
+decision on how it's auto-generated from other entities rather than
+manually maintained. The global Capture (+) button (Chapter 4) is also
+still open, and is a natural candidate before or alongside starting the
+mobile phase.
 
 ---
 

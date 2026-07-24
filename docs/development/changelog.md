@@ -88,6 +88,9 @@ Keep entries brief, clear and focused on meaningful changes.
 - Gear items can now be linked to the Festivals they were "Seen at" (a many-to-many relationship), editable from the Gear detail page, with quick "add a new Festival" inline
 - Renamed Gear categories: Equipment → Weaponry, Camping → Utilitarian, Maintenance → Maintenance & Storage
 - Outfits, with real version history: an Outfit is a name + cover photo; each Version is an immutable snapshot of which Gear it references plus notes. "+ New Version" pre-fills from the previous version so adjusting a look is fast, and old versions are preserved and browsable, never overwritten
+- Journal Entries: free-form written memories, optionally tied to a Festival, that can tag specific Gear, Outfits, and multiple photos — matching Chapter 4's Journal Entry/Photo relationships. Addable from the Journey hub (untied or tied to any Festival) or directly from a Festival's own page (pre-locked to that Festival, shown as its "Memories" section)
+- `Textarea` component, and shared `GearMultiPicker`/`OutfitMultiPicker`/`MultiPhotoPicker` components for tagging multiple items onto a Journal Entry
+- Generalised the many-to-many join-table logic (`electron/lib/repository.cjs`'s `createJoinTable`) so new relationships like Journal Entry ↔ Gear/Outfits/Photos don't need bespoke SQL each time; the existing Gear ↔ Festival link was refactored onto it too
 
 ### Fixed
 - App rendered a blank page because `<Routes>` was used outside a `<BrowserRouter>`

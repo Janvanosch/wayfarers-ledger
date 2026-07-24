@@ -11,6 +11,7 @@ import Button from "../../components/ui/Button";
 import Cover from "../../components/ui/Cover";
 import OutfitForm from "./OutfitForm";
 import OutfitVersionForm from "./OutfitVersionForm";
+import { formatDate } from "../../shared/utils/formatDate";
 
 import type {
   Gear,
@@ -19,10 +20,6 @@ import type {
   OutfitVersion,
   OutfitVersionFields,
 } from "../../types/ledger";
-
-function formatDate(iso: string) {
-  return new Date(iso).toLocaleDateString();
-}
 
 export default function OutfitDetailPage() {
   const { id } = useParams<{ id: string }>();

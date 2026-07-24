@@ -1,0 +1,12 @@
+.journal-entry-card-photos {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.journal-entry-card-photos .wl-cover {
+  width: 96px;
+  height: 96px;
+  aspect-ratio: 1;
+  border-radius: var(--radius-sm);
+}

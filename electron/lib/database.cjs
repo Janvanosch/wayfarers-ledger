@@ -127,6 +127,43 @@ const MIGRATIONS = [
       `);
     },
   },
+  {
+    version: 6,
+    up(database) {
+      database.run(`
+        CREATE TABLE journal_entries (
+          id TEXT PRIMARY KEY,
+          title TEXT,
+          body TEXT NOT NULL,
+          festival_id TEXT REFERENCES festivals(id),
+          created_at TEXT NOT NULL,
+          updated_at TEXT NOT NULL,
+          deleted_at TEXT
+        );
+
+        CREATE TABLE journal_entry_photos (
+          journal_entry_id TEXT NOT NULL REFERENCES journal_entries(id),
+          photo_id TEXT NOT NULL REFERENCES photos(id),
+          created_at TEXT NOT NULL,
+          PRIMARY KEY (journal_entry_id, photo_id)
+        );
+
+        CREATE TABLE journal_entry_gear (
+          journal_entry_id TEXT NOT NULL REFERENCES journal_entries(id),
+          gear_id TEXT NOT NULL REFERENCES gear(id),
+          created_at TEXT NOT NULL,
+          PRIMARY KEY (journal_entry_id, gear_id)
+        );
+
+        CREATE TABLE journal_entry_outfits (
+          journal_entry_id TEXT NOT NULL REFERENCES journal_entries(id),
+          outfit_id TEXT NOT NULL REFERENCES outfits(id),
+          created_at TEXT NOT NULL,
+          PRIMARY KEY (journal_entry_id, outfit_id)
+        );
+      `);
+    },
+  },
 ];
 
 async function init() {

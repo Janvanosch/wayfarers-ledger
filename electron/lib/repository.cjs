@@ -104,4 +104,55 @@ function createRepository(table, idPrefix, columns) {
   };
 }
 
-module.exports = { createRepository };
+/**
+ * Generic many-to-many join table (link/unlink/lookup), for relationships
+ * like "which Festivals has this Gear been seen at". No id, no soft delete —
+ * just rows connecting two other tables.
+ */
+function createJoinTable(table, leftColumn, rightColumn) {
+  return {
+    link(leftId, rightId) {
+      const db = database.getDb();
+      db.run(
+        `INSERT OR IGNORE INTO ${table} (${leftColumn}, ${rightColumn}, created_at) VALUES (?, ?, ?)`,
+        [leftId, rightId, nowIso()],
+      );
+      database.save();
+    },
+
+    unlink(leftId, rightId) {
+      const db = database.getDb();
+      db.run(
+        `DELETE FROM ${table} WHERE ${leftColumn} = ? AND ${rightColumn} = ?`,
+        [leftId, rightId],
+      );
+      database.save();
+    },
+
+    rightIdsFor(leftId) {
+      const db = database.getDb();
+      const stmt = db.prepare(
+        `SELECT ${rightColumn} AS value FROM ${table} WHERE ${leftColumn} = :leftId`,
+      );
+      stmt.bind({ ":leftId": leftId });
+      const ids = [];
+      while (stmt.step()) ids.push(stmt.getAsObject().value);
+      stmt.free();
+      return ids;
+    },
+
+    leftIdsFor(rightId) {
+      const db = database.getDb();
+      const stmt = db.prepare(
+        `SELECT ${leftColumn} AS value FROM ${table} WHERE ${rightColumn} = :rightId`,
+      );
+      stmt.bind({ ":rightId": rightId });
+      const ids = [];
+      while (stmt.step()) ids.push(stmt.getAsObject().value);
+      stmt.free();
+      return ids;
+    },
+  };
+}
+
+module.exports = { createRepository, createJoinTable };
