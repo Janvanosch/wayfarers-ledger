@@ -7,3 +7,12 @@
 .header .wl-heading {
   font-size: var(--font-size-xl);
 }
+
+.header-home-link {
+  display: inline-block;
+  transition: opacity var(--transition-fast);
+}
+
+.header-home-link:hover {
+  opacity: 0.75;
+}

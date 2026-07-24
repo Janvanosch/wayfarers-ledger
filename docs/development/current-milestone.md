@@ -1,24 +1,25 @@
 # Current Milestone
 
-**Status:** Active  
-**Started:** 2026-07-24  
-**Target Version:** v0.1.0
+**Status:** Active
+**Started:** 2026-07-24
+**Target Version:** v0.2.0
 
 ---
 
 # Milestone
 
-## Foundation
+## Core Journey
 
-The goal of this milestone is to establish the technical foundation of The Wayfarer's Ledger.
+The Foundation milestone (v0.1.0) is complete: documentation, design system,
+Electron application shell, real SQLite-backed Vault storage, and Wayfarer
+onboarding all work end to end.
 
-No production features should be considered complete until this milestone has been finished.
+This milestone lets a Wayfarer actually start recording their Journey, per
+Phase 2 of the roadmap.
 
 ---
 
-# Objectives
-
-Complete the following foundations.
+# Foundation Milestone (v0.1.0) — Complete
 
 ## Documentation
 
@@ -27,8 +28,6 @@ Complete the following foundations.
 - [x] Development documentation
 - [x] Keeper Log
 - [x] First ADR (ADR-001 — Use Electron, ADR-002 — Use sql.js)
-
----
 
 ## Project Structure
 
@@ -39,8 +38,6 @@ Complete the following foundations.
 - [x] Feature-first folder structure
 - [x] Electron application shell (see ADR-001)
 
----
-
 ## Design System
 
 - [x] Colour palette
@@ -48,68 +45,60 @@ Complete the following foundations.
 - [x] Spacing system
 - [x] Buttons
 - [x] Cards
-- [ ] Icons
-- [ ] Forms
+- [ ] Icons (deferred — build when a feature needs them)
+- [ ] Forms polish (Input exists; richer controls deferred)
 - [x] Layout components (Container, Stack, Surface)
-
----
+- [x] Photo-first list pattern (`photo-grid`, `Cover`)
 
 ## Core Infrastructure
 
 - [x] SQLite integration (sql.js — see ADR-002)
 - [x] Repository pattern
 - [x] Local storage abstraction (the Vault: folder picker, structure, remembered path)
-- [ ] Image storage (Photos folder exists in the Vault structure; import/checksum logic not yet built — no feature needs it yet)
+- [x] Image storage (`vault.importPhoto`, checksum-named, served via the `wl-vault://` protocol)
 - [x] UUID generation
 - [x] Logging
 - [x] Settings management
 
 ---
 
-## First Features
+# Core Journey Objectives
 
-The first functional feature should be the Home page.
-
-The Home page will introduce the overall visual language of the application.
-
-Initial sections include:
-
-- Home Hero
-- Quick Actions
-- Recent Journey
+- [x] Gear Library (list, detail, quick-capture create, edit)
+- [x] Makers (their own entity, linked from Gear, with quick-create from the Gear form)
+- [ ] Outfit Library
+- [ ] Festival Library
+- [ ] Journal Entries
+- [ ] Timeline
+- [ ] Basic Search
+- [ ] Home Dashboard wired to real data (Recent Journey is still a static empty state)
 
 ---
 
 # Definition of Done
 
-This milestone is complete when:
-
-- documentation is complete
-- the design system exists
-- the application architecture is stable
-- the first reusable components exist
-- the Home page has been implemented
-- the project is ready for feature development
+This milestone is complete when a Wayfarer can record Gear, Outfits, and
+Festivals, write Journal Entries, and see them reflected in a real Timeline —
+the minimum needed for the app to function as a genuine field journal rather
+than a single-feature demo.
 
 ---
 
 # Current Focus
 
-The Foundation milestone is essentially complete. A Wayfarer can now go
-through first-run setup, get a real `.ledger` file created in a Vault folder
-of their choosing (verified working inside their own Dropbox folder), and
-have the app remember and reopen it automatically on every future launch.
-
-Remaining open items (Icons, Forms polish, Image storage) are deliberately
-deferred until a feature actually needs them, per Progressive Completion.
+Gear and Makers are built and verified working end to end (real photos, real
+relationships, real persistence). Both list pages, detail pages, and the
+quick-capture forms follow the same pattern, which the next entities can
+reuse directly.
 
 ---
 
 # Next Task
 
-Decide the first real feature to build against this foundation (the Gear
-Library is the natural first candidate per the Phase 2 roadmap) and give it
-its own repository, following the pattern in `electron/lib/repository.cjs`.
+Decide the next entity to build — Festivals is the strongest candidate next,
+since it would let Gear's "Journey" (which festivals a piece of gear has
+been to) start to take real shape, and Outfits reference both Gear and
+Festivals so benefits from Festivals existing first.
 
 ---
 
@@ -118,18 +107,3 @@ its own repository, following the pattern in `electron/lib/repository.cjs`.
 This document should always describe the current development focus.
 
 When the milestone changes, update this document before starting the next major phase.
-
-## Current Milestone
-
-✅ Project foundation
-
-- [x] Clean Vite project
-- [x] Routing
-- [x] Folder architecture
-- [x] Global styling
-- [x] Design tokens
-- [x] Reusable UI components (Container, Heading, Text, Stack, Surface, Card, Button, Input)
-- [x] Home page layout
-- [x] Core infrastructure (SQLite via sql.js, repository pattern, local Vault, Wayfarer onboarding)
-
-⬜ Journey feature foundation (first real feature — Gear Library is the likely candidate)

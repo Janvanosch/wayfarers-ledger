@@ -23,6 +23,57 @@ const MIGRATIONS = [
       `);
     },
   },
+  {
+    version: 2,
+    up(database) {
+      database.run(`
+        CREATE TABLE photos (
+          id TEXT PRIMARY KEY,
+          filename TEXT NOT NULL,
+          relative_path TEXT NOT NULL,
+          checksum TEXT NOT NULL,
+          import_date TEXT NOT NULL,
+          created_at TEXT NOT NULL,
+          updated_at TEXT NOT NULL,
+          deleted_at TEXT
+        );
+
+        CREATE TABLE gear (
+          id TEXT PRIMARY KEY,
+          name TEXT NOT NULL,
+          category TEXT,
+          material TEXT,
+          weight TEXT,
+          colour TEXT,
+          price TEXT,
+          cover_photo_id TEXT REFERENCES photos(id),
+          created_at TEXT NOT NULL,
+          updated_at TEXT NOT NULL,
+          deleted_at TEXT
+        );
+      `);
+    },
+  },
+  {
+    version: 3,
+    up(database) {
+      database.run(`
+        CREATE TABLE makers (
+          id TEXT PRIMARY KEY,
+          name TEXT NOT NULL,
+          website TEXT,
+          instagram TEXT,
+          notes TEXT,
+          logo_photo_id TEXT REFERENCES photos(id),
+          created_at TEXT NOT NULL,
+          updated_at TEXT NOT NULL,
+          deleted_at TEXT
+        );
+
+        ALTER TABLE gear ADD COLUMN maker_id TEXT REFERENCES makers(id);
+      `);
+    },
+  },
 ];
 
 async function init() {

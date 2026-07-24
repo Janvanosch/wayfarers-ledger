@@ -1,0 +1,9 @@
+.gear-form {
+  width: 100%;
+}
+
+.gear-form-field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}

@@ -1,5 +1,6 @@
-const { app, BrowserWindow } = require("electron");
+const { app, BrowserWindow, protocol, net } = require("electron");
 const path = require("node:path");
+const { pathToFileURL } = require("node:url");
 
 const logger = require("./lib/logger.cjs");
 const settings = require("./lib/settings.cjs");
@@ -9,6 +10,36 @@ const { registerIpcHandlers } = require("./lib/ipc.cjs");
 
 const isDev = !app.isPackaged;
 let mainWindow = null;
+
+// Must be registered before app is ready. Lets the renderer display photos
+// from the Vault (e.g. <img src="wl-vault://photos/abc123.jpg">) without
+// granting it direct filesystem access.
+protocol.registerSchemesAsPrivileged([
+  {
+    scheme: "wl-vault",
+    privileges: { standard: true, secure: true, supportFetchAPI: true, stream: true },
+  },
+]);
+
+function registerVaultProtocol() {
+  protocol.handle("wl-vault", (request) => {
+    const url = new URL(request.url);
+    const vaultPath = vault.getCurrentVaultPath();
+    if (!vaultPath) {
+      return new Response("Vault not open", { status: 404 });
+    }
+
+    const photosDir = path.join(vaultPath, "Photos");
+    const filename = path.basename(decodeURIComponent(url.pathname));
+    const filePath = path.join(photosDir, filename);
+
+    if (!filePath.startsWith(photosDir)) {
+      return new Response("Forbidden", { status: 403 });
+    }
+
+    return net.fetch(pathToFileURL(filePath).toString());
+  });
+}
 
 function createWindow() {
   mainWindow = new BrowserWindow({
@@ -49,6 +80,7 @@ app.whenReady().then(async () => {
   await database.init();
   await reopenRememberedVault();
 
+  registerVaultProtocol();
   registerIpcHandlers(() => mainWindow);
   createWindow();
 

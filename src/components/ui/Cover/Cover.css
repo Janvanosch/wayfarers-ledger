@@ -1,0 +1,10 @@
+.wl-cover {
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+}
+
+.wl-cover-empty {
+  background: var(--color-surface-alt);
+}

@@ -7,4 +7,20 @@ contextBridge.exposeInMainWorld("ledger", {
     createNew: (wayfarerName) =>
       ipcRenderer.invoke("ledger:vault:createNew", wayfarerName),
   },
+  photos: {
+    pickFile: () => ipcRenderer.invoke("photos:pickFile"),
+  },
+  gear: {
+    list: () => ipcRenderer.invoke("gear:list"),
+    get: (id) => ipcRenderer.invoke("gear:get", id),
+    create: (fields) => ipcRenderer.invoke("gear:create", fields),
+    update: (id, fields) => ipcRenderer.invoke("gear:update", id, fields),
+  },
+  makers: {
+    list: () => ipcRenderer.invoke("makers:list"),
+    get: (id) => ipcRenderer.invoke("makers:get", id),
+    create: (fields) => ipcRenderer.invoke("makers:create", fields),
+    update: (id, fields) => ipcRenderer.invoke("makers:update", id, fields),
+    gearFor: (makerId) => ipcRenderer.invoke("makers:gearFor", makerId),
+  },
 });

@@ -1,0 +1,8 @@
+.maker-list-page {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+
+  max-width: var(--container-width);
+  padding-block: var(--space-7);
+}

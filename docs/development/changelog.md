@@ -79,6 +79,11 @@ Keep entries brief, clear and focused on meaningful changes.
 - First-run onboarding (`VaultSetup`) to create or open a Vault and name the Wayfarer
 - Generic repository pattern (`electron/lib/repository.cjs`) for future entities (Gear, Festivals, ...) to build on
 - `Input` component
+- Gear Library: add/view/edit Gear with a real photo (imported into the Vault), category, Maker, material, weight, colour, and price
+- A custom `wl-vault://` protocol so the renderer can securely display photos stored in the Vault
+- Maker Library: Makers are their own entity (name, website, Instagram, notes, logo) linked to Gear, instead of free text — includes quick "add a new Maker" directly from the Gear form
+- `Cover`, `MakerPicker` components, and a shared `photo-grid`/`photo-card` pattern for photo-first list views (reused by Gear and Makers, and future Festivals/Outfits)
+- Clicking the app title in the header now always returns Home, fixing pages (Gear, Makers) that had no other way back
 
 ### Fixed
 - App rendered a blank page because `<Routes>` was used outside a `<BrowserRouter>`

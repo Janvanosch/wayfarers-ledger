@@ -18,12 +18,12 @@ The backlog is intentionally organised by functional area rather than priority.
 
 # Foundation
 
-- [ ] Design System
-- [ ] Component Library
+- [x] Design System
+- [x] Component Library
 - [ ] Theme Support
 - [ ] Settings
-- [ ] SQLite Integration
-- [ ] Local Vault
+- [x] SQLite Integration
+- [x] Local Vault
 - [ ] Import / Export
 - [ ] Backup System
 
@@ -52,12 +52,12 @@ The backlog is intentionally organised by functional area rather than priority.
 
 # Gear
 
-- [ ] Gear Library
-- [ ] Gear Details
-- [ ] Categories
-- [ ] Materials
+- [x] Gear Library
+- [x] Gear Details
+- [x] Categories
+- [x] Materials
 - [ ] Tags
-- [ ] Gear Photos
+- [x] Gear Photos
 - [ ] Gear History
 - [ ] Gear Maintenance
 - [ ] Archive Gear
@@ -96,9 +96,9 @@ The backlog is intentionally organised by functional area rather than priority.
 
 # Makers
 
-- [ ] Maker Library
-- [ ] Maker Details
-- [ ] Maker Notes
+- [x] Maker Library
+- [x] Maker Details
+- [x] Maker Notes
 - [ ] Favourite Makers
 
 ---

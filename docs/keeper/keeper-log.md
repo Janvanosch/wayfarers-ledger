@@ -77,10 +77,17 @@ Completed:
 - Verified the entire flow for real, end to end: created a Vault in Jan's actual Dropbox folder, confirmed the `.ledger` file and folder structure (`Photos`/`Documents`/`Backups`/`Exports`) on disk, read the Wayfarer row back out of the SQLite file directly, restarted the app and confirmed it reopens the remembered Vault automatically with no setup screen, and confirmed visually (screenshot) that the Home page shows "Welcome back, Jan."
 - The Foundation milestone (v0.1.0) is now essentially complete.
 
+- Built the Gear Library, the first real feature on top of the Foundation: `gear` and `photos` tables (migration 2), a generic-repository-based `gear` IPC API, and `GearListPage`/`GearDetailPage`/`GearForm` on the frontend. Gear can be created with just a name (Progressive Completion) or with category, Maker, material, weight, colour, and price.
+- Built real photo import: `vault.importPhoto()` copies a chosen file into the Vault's `Photos` folder (named by content checksum, so re-importing the same photo doesn't duplicate it), and a custom `wl-vault://` protocol (registered in `main.cjs`, scoped to the open Vault's `Photos` folder only) lets the sandboxed renderer display those photos without direct filesystem access.
+- Realised Gear needed Makers to be their own entity, not a text field, matching Chapter 2 of the Bible ("A Maker can be connected to many Gear items"). Added `makers` table + `gear.maker_id` (migration 3), a `makers` IPC API, and `MakerListPage`/`MakerDetailPage`/`MakerForm`. Added `MakerPicker` — a dropdown on the Gear form that can also create a new Maker inline without leaving the form.
+- Extracted the "large photo cards" pattern (Chapter 4) into a shared `src/styles/photo-grid.css` so Gear and Makers (and later Festivals/Outfits) all get the same photo-first list view for free.
+- Fixed a real navigation gap the Wayfarer found: the Gear and Makers list pages had no way back to Home at all. Made the header title a permanent Home link instead of patching each page individually.
+- Verified everything for real: added an actual piece of gear with a real photo, confirmed the file landed in the Vault's `Photos` folder and the row in the `.ledger` file; created a Maker from the Gear form, gave it a website and logo, and confirmed the `gear.maker_id` relationship by reading it straight out of the database.
+
 Next:
 - Icons and further Forms polish are still open Design System items; build them when a feature needs them rather than speculatively.
-- Image storage (photo import/checksum into the Vault's `Photos` folder) is deferred until a feature needs it.
-- Pick the first real feature to build on this foundation — the Gear Library is the natural candidate per the Phase 2 roadmap.
+- Gear History, Gear Maintenance, Tags, and Archive Gear (soft delete UI) remain open Gear backlog items.
+- Decide the next feature — Outfits or Festivals are the next natural candidates per the Phase 2 roadmap, and Festivals would let Gear's "Journey" (seen at which festivals) start to take shape.
 
 ---
 

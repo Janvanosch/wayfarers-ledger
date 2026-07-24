@@ -8,6 +8,7 @@ import "./styles/globals.css";
 import "./styles/colors.css";
 import "./styles/spacing.css";
 import "./styles/typography.css";
+import "./styles/photo-grid.css";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>

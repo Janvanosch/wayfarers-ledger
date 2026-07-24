@@ -1,0 +1,9 @@
+.maker-form {
+  width: 100%;
+}
+
+.maker-form-field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
