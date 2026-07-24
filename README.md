@@ -104,6 +104,10 @@ Never define it.
 - TypeScript
 - Vite
 
+## Application Shell
+
+- Electron (see [ADR-001](docs/adr/001-use-electron.md))
+
 ## Routing
 
 - React Router
@@ -210,16 +214,22 @@ Install dependencies.
 npm install
 ```
 
-Start the development server.
+Start the app in its normal installed-app form (opens a native window):
+
+```bash
+npm run electron:dev
+```
+
+Or, for faster UI iteration, run just the web frontend in a browser tab (routing and storage-dependent features will not fully work here — see [ADR-001](docs/adr/001-use-electron.md)):
 
 ```bash
 npm run dev
 ```
 
-Build for production.
+Build the installable desktop application:
 
 ```bash
-npm run build
+npm run electron:build
 ```
 
 ---

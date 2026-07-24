@@ -67,10 +67,13 @@ Completed:
 - Verified the app renders correctly and typechecks cleanly.
 
 - Self-hosted the `Inter` and `Cormorant Garamond` variable fonts (`src/assets/fonts`, loaded via `src/styles/fonts.css`) instead of depending on a Google Fonts CDN, in line with Offline First and Privacy First.
+- Realised the Vault promise in Chapter 7 (a real `.ledger` file, saved into a folder the Wayfarer picks, e.g. Dropbox) conflicts with running as a browser-only PWA: browsers restrict writing arbitrary files to disk, and the one workaround (File System Access API) only works in Chrome/Edge.
+- Decided, with Jan, to package the app as an installed desktop application instead of a website — see **ADR-001**. Chose Electron over Tauri to avoid introducing a new (Rust) toolchain, at the cost of a larger installed size.
+- Added the Electron application shell: `electron/main.cjs` (opens a native window, loads the Vite dev server in development / `dist/index.html` in production) and `electron/preload.cjs` (currently empty, reserved for the future Vault/SQLite bridge). Added `npm run electron:dev` and `npm run electron:build` scripts and an `electron-builder` config in `package.json`.
 
 Next:
 - Icons and Forms are still open Design System items; build them when a feature needs them rather than speculatively.
-- Begin Core Infrastructure: decide the offline storage approach (SQLite-in-browser vs. IndexedDB-backed repository) and record it as the project's first ADR before implementing.
+- Implement SQLite in the Electron main process (e.g. `better-sqlite3`) and the repository pattern the React frontend will use to read/write data over IPC, plus the Vault folder picker.
 
 ---
 

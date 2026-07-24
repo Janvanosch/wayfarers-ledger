@@ -24,9 +24,9 @@ Complete the following foundations.
 
 - [x] Project Bible
 - [x] Documentation structure
-- [ ] Development documentation
-- [ ] Keeper Log
-- [ ] First ADR
+- [x] Development documentation
+- [x] Keeper Log
+- [x] First ADR (ADR-001 — Use Electron)
 
 ---
 
@@ -37,6 +37,7 @@ Complete the following foundations.
 - [x] Vite
 - [x] Routing
 - [x] Feature-first folder structure
+- [x] Electron application shell (see ADR-001)
 
 ---
 
@@ -96,13 +97,13 @@ This milestone is complete when:
 
 Current task:
 
-**Begin Core Infrastructure: local storage, SQLite, and the repository pattern.**
+**Begin Core Infrastructure: SQLite integration and the repository pattern, now that the app runs as an installed Electron application (ADR-001) with real filesystem access.**
 
 ---
 
 # Next Task
 
-Decide on the storage approach for an offline-first PWA (SQLite-in-browser vs. IndexedDB-backed repository) and record the decision as an ADR before implementing it.
+Implement SQLite access in the Electron main process (e.g. `better-sqlite3`), define the repository pattern the React frontend uses to read/write data via IPC, and wire up the Vault folder picker.
 
 Icons and Forms remain open items in the Design System and can be built as needed by upcoming features rather than up front.
 

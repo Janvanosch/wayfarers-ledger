@@ -74,6 +74,7 @@ Keep entries brief, clear and focused on meaningful changes.
 - Home page now composed entirely from design system components
 
 - Self-hosted `Inter` and `Cormorant Garamond` variable fonts (no external CDN dependency)
+- Electron application shell (ADR-001) so the app runs as an installed desktop program with real filesystem access, instead of a browser-only PWA
 
 ### Fixed
 - App rendered a blank page because `<Routes>` was used outside a `<BrowserRouter>`
