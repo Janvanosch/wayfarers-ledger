@@ -66,10 +66,10 @@ The backlog is intentionally organised by functional area rather than priority.
 
 # Outfits
 
-- [ ] Outfit Library
-- [ ] Outfit Builder
-- [ ] Outfit Versions
-- [ ] Outfit Photos
+- [x] Outfit Library
+- [x] Outfit Builder
+- [x] Outfit Versions
+- [x] Outfit Photos
 - [ ] Favourite Outfits
 
 ---
@@ -110,6 +110,7 @@ The backlog is intentionally organised by functional area rather than priority.
 - [ ] Metadata
 - [ ] Albums
 - [ ] AI Recognition
+- [ ] Tag Gear/Outfits within a Festival photo (Jan's idea, 2026-07-24 — richer than the current flat "Seen at" link; see keeper log)
 
 ---
 

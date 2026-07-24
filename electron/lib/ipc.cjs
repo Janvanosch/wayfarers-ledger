@@ -1,8 +1,16 @@
 const { ipcMain, dialog } = require("electron");
 const vault = require("./vault.cjs");
 const database = require("./database.cjs");
-const { wayfarers, photos, gear, makers, festivals, gearFestivals } =
-  require("./repositories.cjs");
+const {
+  wayfarers,
+  photos,
+  gear,
+  makers,
+  festivals,
+  gearFestivals,
+  outfits,
+  outfitVersions,
+} = require("./repositories.cjs");
 const logger = require("./logger.cjs");
 
 const IMAGE_EXTENSIONS = ["jpg", "jpeg", "png", "webp", "gif"];
@@ -43,6 +51,22 @@ function withMakerExtras(item) {
 function withFestivalExtras(item) {
   if (!item) return item;
   return { ...item, coverPhotoFilename: photoFilename(item.coverPhotoId) };
+}
+
+function withOutfitExtras(item) {
+  if (!item) return item;
+  return { ...item, coverPhotoFilename: photoFilename(item.coverPhotoId) };
+}
+
+function resolveGearSummaries(gearIds) {
+  return gearIds
+    .map((gearId) => gear.findById(gearId))
+    .filter(Boolean)
+    .map(withGearExtras);
+}
+
+function withVersionGear(version) {
+  return { ...version, gear: resolveGearSummaries(version.gearIds) };
 }
 
 function getCurrentWayfarer() {
@@ -194,6 +218,55 @@ function registerIpcHandlers(getWindow) {
 
   ipcMain.handle("gear:unlinkFestival", (_event, gearId, festivalId) => {
     gearFestivals.unlink(gearId, festivalId);
+  });
+
+  ipcMain.handle("outfits:list", () => outfits.findAll().map(withOutfitExtras));
+
+  ipcMain.handle("outfits:get", (_event, id) =>
+    withOutfitExtras(outfits.findById(id)),
+  );
+
+  ipcMain.handle("outfits:create", (_event, fields) => {
+    const { photoPath, ...rest } = fields;
+    const coverPhotoId = importPhotoIfProvided(photoPath);
+    return withOutfitExtras(
+      outfits.create({ ...rest, coverPhotoId, currentVersion: 0 }),
+    );
+  });
+
+  ipcMain.handle("outfits:update", (_event, id, fields) => {
+    const { photoPath, ...rest } = fields;
+    if (photoPath) {
+      rest.coverPhotoId = importPhotoIfProvided(photoPath);
+    }
+    return withOutfitExtras(outfits.update(id, rest));
+  });
+
+  ipcMain.handle("outfits:createVersion", (_event, outfitId, fields) => {
+    const outfit = outfits.findById(outfitId);
+    if (!outfit) return null;
+
+    const nextVersion = outfit.currentVersion + 1;
+    const version = outfitVersions.create({
+      outfitId,
+      version: nextVersion,
+      gearIds: fields.gearIds ?? [],
+      notes: fields.notes ?? null,
+    });
+    outfits.update(outfitId, { currentVersion: nextVersion });
+
+    return withVersionGear(version);
+  });
+
+  ipcMain.handle("outfits:versions", (_event, outfitId) =>
+    outfitVersions.findAllForOutfit(outfitId).map(withVersionGear),
+  );
+
+  ipcMain.handle("outfits:currentGear", (_event, outfitId) => {
+    const outfit = outfits.findById(outfitId);
+    if (!outfit || outfit.currentVersion === 0) return [];
+    const version = outfitVersions.findVersion(outfitId, outfit.currentVersion);
+    return version ? resolveGearSummaries(version.gearIds) : [];
   });
 
   logger.info("IPC handlers registered");

@@ -86,6 +86,8 @@ Keep entries brief, clear and focused on meaningful changes.
 - Clicking the app title in the header now always returns Home, fixing pages (Gear, Makers) that had no other way back
 - Journey hub page (`/journey`) with a working Festivals section: add/view/edit a Festival with dates, location, weather, notes, and a banner photo
 - Gear items can now be linked to the Festivals they were "Seen at" (a many-to-many relationship), editable from the Gear detail page, with quick "add a new Festival" inline
+- Renamed Gear categories: Equipment → Weaponry, Camping → Utilitarian, Maintenance → Maintenance & Storage
+- Outfits, with real version history: an Outfit is a name + cover photo; each Version is an immutable snapshot of which Gear it references plus notes. "+ New Version" pre-fills from the previous version so adjusting a look is fast, and old versions are preserved and browsable, never overwritten
 
 ### Fixed
 - App rendered a blank page because `<Routes>` was used outside a `<BrowserRouter>`

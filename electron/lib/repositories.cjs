@@ -1,5 +1,6 @@
 const { createRepository } = require("./repository.cjs");
 const database = require("./database.cjs");
+const { generateId } = require("./ids.cjs");
 
 // Additional repositories (festivals, outfits, makers, ...) are created the
 // same way, once those features are built and their tables migrated in.
@@ -110,4 +111,81 @@ const gearFestivals = {
   },
 };
 
-module.exports = { wayfarers, photos, gear, makers, festivals, gearFestivals };
+const outfits = createRepository("outfits", "outfit", [
+  { js: "id", db: "id" },
+  { js: "name", db: "name" },
+  { js: "coverPhotoId", db: "cover_photo_id" },
+  { js: "currentVersion", db: "current_version" },
+  { js: "createdAt", db: "created_at" },
+  { js: "updatedAt", db: "updated_at" },
+  { js: "deletedAt", db: "deleted_at" },
+]);
+
+function outfitVersionFromRow(row) {
+  return {
+    id: row.id,
+    outfitId: row.outfit_id,
+    version: row.version,
+    gearIds: JSON.parse(row.gear_ids),
+    notes: row.notes,
+    createdAt: row.created_at,
+  };
+}
+
+// Outfit Versions are immutable snapshots ("Versions never change. A new
+// version creates a new record."), so they don't fit the generic
+// create/update/softDelete repository pattern above — there is no update.
+const outfitVersions = {
+  create({ outfitId, version, gearIds, notes }) {
+    const db = database.getDb();
+    const id = generateId("outfitversion");
+    const createdAt = new Date().toISOString();
+    db.run(
+      "INSERT INTO outfit_versions (id, outfit_id, version, gear_ids, notes, created_at) VALUES (?, ?, ?, ?, ?, ?)",
+      [id, outfitId, version, JSON.stringify(gearIds ?? []), notes ?? null, createdAt],
+    );
+    database.save();
+    return outfitVersionFromRow({
+      id,
+      outfit_id: outfitId,
+      version,
+      gear_ids: JSON.stringify(gearIds ?? []),
+      notes: notes ?? null,
+      created_at: createdAt,
+    });
+  },
+
+  findAllForOutfit(outfitId) {
+    const db = database.getDb();
+    const stmt = db.prepare(
+      "SELECT * FROM outfit_versions WHERE outfit_id = :outfitId ORDER BY version DESC",
+    );
+    stmt.bind({ ":outfitId": outfitId });
+    const results = [];
+    while (stmt.step()) results.push(outfitVersionFromRow(stmt.getAsObject()));
+    stmt.free();
+    return results;
+  },
+
+  findVersion(outfitId, version) {
+    const db = database.getDb();
+    const stmt = db.prepare(
+      "SELECT * FROM outfit_versions WHERE outfit_id = :outfitId AND version = :version",
+    );
+    stmt.bind({ ":outfitId": outfitId, ":version": version });
+    const found = stmt.step() ? outfitVersionFromRow(stmt.getAsObject()) : null;
+    stmt.free();
+    return found;
+  },
+};
+
+module.exports = {
+  wayfarers,
+  photos,
+  gear,
+  makers,
+  festivals,
+  gearFestivals,
+  outfits,
+  outfitVersions,
+};

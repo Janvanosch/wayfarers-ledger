@@ -7,6 +7,8 @@ import MakerListPage from "../pages/Makers/MakerListPage";
 import MakerDetailPage from "../pages/Makers/MakerDetailPage";
 import JourneyPage from "../pages/Journey/JourneyPage";
 import FestivalDetailPage from "../pages/Journey/FestivalDetailPage";
+import OutfitListPage from "../pages/Outfits/OutfitListPage";
+import OutfitDetailPage from "../pages/Outfits/OutfitDetailPage";
 
 export default function AppRoutes() {
   return (
@@ -18,6 +20,8 @@ export default function AppRoutes() {
       <Route path="/makers/:id" element={<MakerDetailPage />} />
       <Route path="/journey" element={<JourneyPage />} />
       <Route path="/festivals/:id" element={<FestivalDetailPage />} />
+      <Route path="/outfits" element={<OutfitListPage />} />
+      <Route path="/outfits/:id" element={<OutfitDetailPage />} />
     </Routes>
   );
 }

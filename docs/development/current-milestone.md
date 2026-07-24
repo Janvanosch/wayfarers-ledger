@@ -66,11 +66,12 @@ Phase 2 of the roadmap.
 
 - [x] Gear Library (list, detail, quick-capture create, edit)
 - [x] Makers (their own entity, linked from Gear, with quick-create from the Gear form)
-- [ ] Outfit Library
+- [x] Outfit Library, with real version history (Outfit = stable identity, Version = immutable snapshot of Gear + notes)
 - [x] Journey hub page (`/journey`) with a working Festival Library (list, detail, quick-capture create, edit) and Gear↔Festival "Seen at" linking
 - [ ] Journal Entries
 - [ ] Timeline
 - [ ] Basic Search
+- [ ] Global Capture (+) button
 - [ ] Home Dashboard wired to real data (Recent Journey is still a static empty state)
 
 ---
@@ -86,18 +87,25 @@ than a single-feature demo.
 
 # Current Focus
 
-Gear, Makers, and Festivals are built and verified working end to end (real
-photos, real relationships, real persistence), including the Gear↔Festival
-"Seen at" link — the Journey hub is no longer an isolated feature, it
-actually connects to Gear per the Bible's Cross-Linking principle.
+Gear, Makers, Festivals, and Outfits (with version history) are all built
+and verified working end to end (real photos, real relationships, real
+persistence, real version snapshots).
+
+A mobile phase has been agreed as the next major phase after Core Journey,
+since capturing memories while walking around a festival — not sitting at a
+desktop — is the actual point of the app. It is deliberately sequenced
+*after* a bit more of the core feature set, not before, since the frontend
+(everything talking to `window.ledger.*`) should carry over largely as-is,
+while the storage engine needs a genuinely different, mobile-appropriate
+approach (see the Keeper Log for the reasoning).
 
 ---
 
 # Next Task
 
-Outfits is the next major entity, and now has both Gear and Festivals to
-reference (an Outfit is a combination of Gear, worn at a Festival). Journal
-Entries and Timeline are the remaining pieces of the Journey hub itself.
+Journal Entries and Timeline are the remaining pieces of the Journey hub.
+The global Capture (+) button (Chapter 4) is also still open, and is a
+natural candidate before or alongside starting the mobile phase.
 
 ---
 

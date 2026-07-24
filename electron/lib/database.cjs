@@ -101,6 +101,32 @@ const MIGRATIONS = [
       `);
     },
   },
+  {
+    version: 5,
+    up(database) {
+      database.run(`
+        CREATE TABLE outfits (
+          id TEXT PRIMARY KEY,
+          name TEXT NOT NULL,
+          cover_photo_id TEXT REFERENCES photos(id),
+          current_version INTEGER NOT NULL DEFAULT 0,
+          created_at TEXT NOT NULL,
+          updated_at TEXT NOT NULL,
+          deleted_at TEXT
+        );
+
+        CREATE TABLE outfit_versions (
+          id TEXT PRIMARY KEY,
+          outfit_id TEXT NOT NULL REFERENCES outfits(id),
+          version INTEGER NOT NULL,
+          gear_ids TEXT NOT NULL DEFAULT '[]',
+          notes TEXT,
+          created_at TEXT NOT NULL,
+          UNIQUE (outfit_id, version)
+        );
+      `);
+    },
+  },
 ];
 
 async function init() {

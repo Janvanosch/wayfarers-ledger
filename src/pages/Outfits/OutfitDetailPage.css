@@ -1,0 +1,27 @@
+.outfit-detail-page {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-7);
+
+  max-width: var(--container-width);
+  padding-block: var(--space-7);
+}
+
+.outfit-detail-hero {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  max-width: var(--content-width);
+}
+
+.outfit-detail-hero .wl-cover {
+  max-height: 420px;
+  border-radius: var(--radius-lg);
+}
+
+.outfit-detail-hero-body {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-2);
+}
