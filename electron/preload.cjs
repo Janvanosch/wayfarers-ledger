@@ -20,6 +20,8 @@ contextBridge.exposeInMainWorld("ledger", {
       ipcRenderer.invoke("gear:linkFestival", gearId, festivalId),
     unlinkFestival: (gearId, festivalId) =>
       ipcRenderer.invoke("gear:unlinkFestival", gearId, festivalId),
+    delete: (id) => ipcRenderer.invoke("gear:delete", id),
+    restore: (id) => ipcRenderer.invoke("gear:restore", id),
   },
   makers: {
     list: () => ipcRenderer.invoke("makers:list"),
@@ -27,6 +29,8 @@ contextBridge.exposeInMainWorld("ledger", {
     create: (fields) => ipcRenderer.invoke("makers:create", fields),
     update: (id, fields) => ipcRenderer.invoke("makers:update", id, fields),
     gearFor: (makerId) => ipcRenderer.invoke("makers:gearFor", makerId),
+    delete: (id) => ipcRenderer.invoke("makers:delete", id),
+    restore: (id) => ipcRenderer.invoke("makers:restore", id),
   },
   festivals: {
     list: () => ipcRenderer.invoke("festivals:list"),
@@ -64,5 +68,10 @@ contextBridge.exposeInMainWorld("ledger", {
     convertToGear: (id) => ipcRenderer.invoke("wishlist:convertToGear", id),
     fetchImageFromUrl: (url) =>
       ipcRenderer.invoke("wishlist:fetchImageFromUrl", url),
+    delete: (id) => ipcRenderer.invoke("wishlist:delete", id),
+    restore: (id) => ipcRenderer.invoke("wishlist:restore", id),
+  },
+  recentlyDeleted: {
+    list: () => ipcRenderer.invoke("recentlyDeleted:list"),
   },
 });

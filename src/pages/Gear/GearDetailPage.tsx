@@ -45,6 +45,17 @@ export default function GearDetailPage() {
     setEditing(false);
   }
 
+  async function handleDelete() {
+    if (!id) return;
+    const confirmed = window.confirm(
+      "Delete this piece of Gear? You can restore it later from Recently Deleted.",
+    );
+    if (!confirmed) return;
+
+    await window.ledger.gear.delete(id);
+    navigate("/gear");
+  }
+
   if (item === "loading") {
     return (
       <Container>
@@ -88,9 +99,14 @@ export default function GearDetailPage() {
                     <Text muted>{item.makerName}</Text>
                   </Link>
                 )}
-                <Button variant="secondary" onClick={() => setEditing(true)}>
-                  Edit
-                </Button>
+                <Stack direction="row" gap={3}>
+                  <Button variant="secondary" onClick={() => setEditing(true)}>
+                    Edit
+                  </Button>
+                  <Button variant="ghost" onClick={handleDelete}>
+                    Delete
+                  </Button>
+                </Stack>
               </div>
             </div>
 

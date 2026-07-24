@@ -59,6 +59,7 @@ Phase 2 of the roadmap.
 - [x] UUID generation
 - [x] Logging
 - [x] Settings management
+- [x] Safe delete/restore (`restore`/`findDeleted` on the generic repository), wired up for Gear, Makers, and Wishlist via a "Recently Deleted" screen
 
 ---
 

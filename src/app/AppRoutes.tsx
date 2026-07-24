@@ -11,6 +11,7 @@ import OutfitListPage from "../pages/Outfits/OutfitListPage";
 import OutfitDetailPage from "../pages/Outfits/OutfitDetailPage";
 import WishlistListPage from "../pages/Wishlist/WishlistListPage";
 import WishlistDetailPage from "../pages/Wishlist/WishlistDetailPage";
+import RecentlyDeletedPage from "../pages/RecentlyDeleted/RecentlyDeletedPage";
 
 export default function AppRoutes() {
   return (
@@ -26,6 +27,7 @@ export default function AppRoutes() {
       <Route path="/outfits/:id" element={<OutfitDetailPage />} />
       <Route path="/wishlist" element={<WishlistListPage />} />
       <Route path="/wishlist/:id" element={<WishlistDetailPage />} />
+      <Route path="/recently-deleted" element={<RecentlyDeletedPage />} />
     </Routes>
   );
 }

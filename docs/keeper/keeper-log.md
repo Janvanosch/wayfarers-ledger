@@ -114,12 +114,18 @@ Completed:
 - Jan then asked for a Link field plus automatic photo fetching from that link. Added a `url` column (migration 9) and a new `electron/lib/linkPreview.cjs`: given a URL, fetches the page, looks for its `og:image`/`twitter:image` meta tag (what most shop/product pages already expose for link previews), downloads it to a temp file, and hands that back to the existing photo-import pipeline unchanged. Deliberately built as an explicit "Fetch photo from link" button rather than automatic-on-paste, per Chapter 7: network activity should be something the Wayfarer chooses, not something that happens silently.
 - Verified the fetch logic directly against a real URL before touching the UI (confirmed a real, valid 1200×630 PNG was downloaded), then verified the full flow end to end in the app and confirmed the resulting rows (Link and cover photo both populated correctly) directly in the `.ledger` file.
 
+- Jan asked for delete buttons on Gear, Makers, and Wishlist, then separately asked for a broader review of the docs for polish ideas. Read Chapters 5-7 in full for the first time this session (User Experience, Technical Principles, Technical Architecture) rather than answer from memory. Chapter 5 directly settled the delete question: "Mistakes should be easy to recover from. Prefer Undo, Archive, Restore. Instead of irreversible deletion" — so delete was built as soft-delete, not permanent removal.
+- Added `restore`/`findDeleted` to the generic repository (`electron/lib/repository.cjs`) so any entity gets safe delete/restore for free, not just the three Jan asked about. Wired `delete`/`restore` IPC handlers for Gear, Makers, and Wishlist, plus a combined `recentlyDeleted:list`. Built a "Recently Deleted" page (linked from the footer) listing everything soft-deleted across those three types with a Restore button each.
+- Verified end to end: deleted and restored items in the app, then confirmed the underlying `deleted_at` state directly in the `.ledger` file to be sure restore genuinely clears it rather than just hiding the item client-side.
+- While reading Chapters 5-7 for the delete question, found several other gaps worth surfacing to Jan directly (not yet built): no backup system despite the Vault already having an (empty) `Backups` folder, and Chapter 6 explicitly listing "robust backups" under Reliability; no automated tests at all despite Chapter 7 calling for testing "business logic, data integrity, critical workflows" against a schema now at 9 migrations; no autosave despite Chapter 5's "Editing should feel safe... Autosave should be preferred whenever practical"; and no deliberate accessibility pass despite "Accessibility is a requirement. Not an enhancement." Raised these as options rather than building any of them speculatively.
+
 Next:
 - Icons and further Forms polish are still open Design System items; build them when a feature needs them rather than speculatively.
-- Gear History, Gear Maintenance, Tags, and Archive Gear (soft delete UI) remain open Gear backlog items.
+- Gear History, Gear Maintenance, and Tags remain open Gear backlog items (Archive Gear is now done via soft delete).
 - Experience Notes (per-Gear practical notes like "needed thicker socks") are a distinct, smaller concept from Journal Entries and still open.
 - The global Capture (+) button (Chapter 4: "the fastest action in the application") remains open but is lower priority for desktop per Jan; likely more relevant once the mobile phase begins.
 - Mobile phase: investigate Capacitor for wrapping the existing React frontend, and design a cloud-sync-based storage approach to replace direct Vault folder access (Dropbox/Google Drive APIs are the likely candidates) once desktop features are further along.
+- Backups, automated tests, and autosave were flagged to Jan as the most consequential gaps against Chapters 5-7 (see above); pick these up if/when prioritised.
 
 ## In Progress
 

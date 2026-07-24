@@ -230,6 +230,10 @@ function registerIpcHandlers(getWindow) {
     return withGearExtras(gear.update(id, rest));
   });
 
+  ipcMain.handle("gear:delete", (_event, id) => gear.softDelete(id));
+
+  ipcMain.handle("gear:restore", (_event, id) => withGearExtras(gear.restore(id)));
+
   ipcMain.handle("makers:list", () => makers.findAll().map(withMakerExtras));
 
   ipcMain.handle("makers:get", (_event, id) =>
@@ -255,6 +259,12 @@ function registerIpcHandlers(getWindow) {
       .findAll()
       .filter((item) => item.makerId === makerId)
       .map(withGearExtras),
+  );
+
+  ipcMain.handle("makers:delete", (_event, id) => makers.softDelete(id));
+
+  ipcMain.handle("makers:restore", (_event, id) =>
+    withMakerExtras(makers.restore(id)),
   );
 
   ipcMain.handle("festivals:list", () =>
@@ -481,6 +491,18 @@ function registerIpcHandlers(getWindow) {
 
     return withGearExtras(created);
   });
+
+  ipcMain.handle("wishlist:delete", (_event, id) => wishlistItems.softDelete(id));
+
+  ipcMain.handle("wishlist:restore", (_event, id) =>
+    withWishlistExtras(wishlistItems.restore(id)),
+  );
+
+  ipcMain.handle("recentlyDeleted:list", () => ({
+    gear: gear.findDeleted().map(withGearExtras),
+    makers: makers.findDeleted().map(withMakerExtras),
+    wishlist: wishlistItems.findDeleted().map(withWishlistExtras),
+  }));
 
   logger.info("IPC handlers registered");
 }

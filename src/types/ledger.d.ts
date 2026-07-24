@@ -201,6 +201,12 @@ export interface TimelineEvent {
   createdAt: string;
 }
 
+export interface RecentlyDeleted {
+  gear: Gear[];
+  makers: Maker[];
+  wishlist: WishlistItem[];
+}
+
 export interface LedgerApi {
   getStatus: () => Promise<LedgerStatus>;
   vault: {
@@ -218,6 +224,8 @@ export interface LedgerApi {
     festivalsFor: (gearId: string) => Promise<Festival[]>;
     linkFestival: (gearId: string, festivalId: string) => Promise<void>;
     unlinkFestival: (gearId: string, festivalId: string) => Promise<void>;
+    delete: (id: string) => Promise<void>;
+    restore: (id: string) => Promise<Gear>;
   };
   makers: {
     list: () => Promise<Maker[]>;
@@ -225,6 +233,8 @@ export interface LedgerApi {
     create: (fields: MakerFields) => Promise<Maker>;
     update: (id: string, fields: Partial<MakerFields>) => Promise<Maker>;
     gearFor: (makerId: string) => Promise<Gear[]>;
+    delete: (id: string) => Promise<void>;
+    restore: (id: string) => Promise<Maker>;
   };
   festivals: {
     list: () => Promise<Festival[]>;
@@ -268,6 +278,11 @@ export interface LedgerApi {
     ) => Promise<WishlistItem>;
     convertToGear: (id: string) => Promise<Gear>;
     fetchImageFromUrl: (url: string) => Promise<WishlistImageFetchResult>;
+    delete: (id: string) => Promise<void>;
+    restore: (id: string) => Promise<WishlistItem>;
+  };
+  recentlyDeleted: {
+    list: () => Promise<RecentlyDeleted>;
   };
 }
 

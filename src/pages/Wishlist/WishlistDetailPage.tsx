@@ -50,6 +50,17 @@ export default function WishlistDetailPage() {
     navigate(`/gear/${created.id}`);
   }
 
+  async function handleDelete() {
+    if (!id) return;
+    const confirmed = window.confirm(
+      "Delete this Wishlist item? You can restore it later from Recently Deleted.",
+    );
+    if (!confirmed) return;
+
+    await window.ledger.wishlist.delete(id);
+    navigate("/wishlist");
+  }
+
   if (item === "loading") {
     return (
       <Container>
@@ -110,6 +121,9 @@ export default function WishlistDetailPage() {
                   disabled={busy}
                 >
                   ✨ Convert to Gear
+                </Button>
+                <Button variant="ghost" onClick={handleDelete} disabled={busy}>
+                  Delete
                 </Button>
               </Stack>
             </div>

@@ -26,6 +26,7 @@ The backlog is intentionally organised by functional area rather than priority.
 - [x] Local Vault
 - [ ] Import / Export
 - [ ] Backup System
+- [x] Soft delete + restore ("Recently Deleted"), available generically to any entity via the repository pattern; currently wired up for Gear, Makers, and Wishlist
 
 ---
 
@@ -60,7 +61,7 @@ The backlog is intentionally organised by functional area rather than priority.
 - [x] Gear Photos
 - [ ] Gear History
 - [ ] Gear Maintenance
-- [ ] Archive Gear
+- [x] Archive Gear (soft delete + restore, via the "Recently Deleted" screen)
 
 ---
 

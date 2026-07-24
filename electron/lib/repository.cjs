@@ -101,6 +101,28 @@ function createRepository(table, idPrefix, columns) {
       ]);
       database.save();
     },
+
+    // "Mistakes should be easy to recover from. Prefer Undo, Archive,
+    // Restore. Instead of irreversible deletion." (Chapter 5)
+    restore(id) {
+      const db = database.getDb();
+      db.run(`UPDATE ${table} SET deleted_at = NULL WHERE id = ?`, [id]);
+      database.save();
+      return this.findById(id);
+    },
+
+    findDeleted() {
+      const db = database.getDb();
+      const stmt = db.prepare(
+        `SELECT * FROM ${table} WHERE deleted_at IS NOT NULL ORDER BY deleted_at DESC`,
+      );
+      const results = [];
+      while (stmt.step()) {
+        results.push(fromRow(stmt.getAsObject()));
+      }
+      stmt.free();
+      return results;
+    },
   };
 }
 

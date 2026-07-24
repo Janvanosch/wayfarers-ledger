@@ -37,6 +37,17 @@ export default function MakerDetailPage() {
     setEditing(false);
   }
 
+  async function handleDelete() {
+    if (!id) return;
+    const confirmed = window.confirm(
+      "Delete this Maker? You can restore it later from Recently Deleted.",
+    );
+    if (!confirmed) return;
+
+    await window.ledger.makers.delete(id);
+    navigate("/makers");
+  }
+
   if (maker === "loading") {
     return (
       <Container>
@@ -83,9 +94,14 @@ export default function MakerDetailPage() {
                 )}
                 {maker.instagram && <Text muted>{maker.instagram}</Text>}
                 {maker.notes && <Text>{maker.notes}</Text>}
-                <Button variant="secondary" onClick={() => setEditing(true)}>
-                  Edit
-                </Button>
+                <Stack direction="row" gap={3}>
+                  <Button variant="secondary" onClick={() => setEditing(true)}>
+                    Edit
+                  </Button>
+                  <Button variant="ghost" onClick={handleDelete}>
+                    Delete
+                  </Button>
+                </Stack>
               </div>
             </div>
 

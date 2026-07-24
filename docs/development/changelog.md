@@ -95,6 +95,7 @@ Keep entries brief, clear and focused on meaningful changes.
 - Existing Vaults are backfilled with real Timeline history from their existing Gear/Festivals/Outfits/Journal Entries on upgrade, so the Timeline doesn't start out empty despite a Ledger full of memories
 - Wishlist: name, Maker, photo, Favourite, and Notes, following the same pattern as Gear/Makers/Festivals/Outfits. "✨ Convert to Gear" creates a real Gear item from a Wishlist entry and archives the original ("When purchased... no information is lost")
 - Wishlist items can hold a Link, with an explicit "Fetch photo from link" action that reads the page's preview image (the same `og:image`/`twitter:image` tags most shop/product pages already provide) and imports it as the cover photo — no network activity happens without the Wayfarer clicking that button
+- Delete, for Gear, Makers, and Wishlist items — implemented as a safe soft-delete rather than permanent removal ("Mistakes should be easy to recover from. Prefer Undo, Archive, Restore. Instead of irreversible deletion" — Chapter 5). A new "Recently Deleted" screen (linked from the footer) lists everything deleted and lets it be restored. `restore`/`findDeleted` were added to the generic repository, so any future entity gets this for free
 
 ### Fixed
 - App rendered a blank page because `<Routes>` was used outside a `<BrowserRouter>`
