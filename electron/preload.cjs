@@ -53,4 +53,7 @@ contextBridge.exposeInMainWorld("ledger", {
     create: (fields) => ipcRenderer.invoke("journal:create", fields),
     update: (id, fields) => ipcRenderer.invoke("journal:update", id, fields),
   },
+  timeline: {
+    list: (limit) => ipcRenderer.invoke("timeline:list", limit),
+  },
 });

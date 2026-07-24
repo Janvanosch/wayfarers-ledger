@@ -69,10 +69,10 @@ Phase 2 of the roadmap.
 - [x] Outfit Library, with real version history (Outfit = stable identity, Version = immutable snapshot of Gear + notes)
 - [x] Journey hub page (`/journey`) with a working Festival Library (list, detail, quick-capture create, edit) and Gear↔Festival "Seen at" linking
 - [x] Journal Entries (title/body, optional Festival, tagged Gear/Outfits, multiple photos), reachable from the Journey hub or as a Festival's "Memories" section
-- [ ] Timeline
+- [x] Timeline, auto-generated from real actions (never manually created), with existing Vaults backfilled with their real history
 - [ ] Basic Search
 - [ ] Global Capture (+) button
-- [ ] Home Dashboard wired to real data (Recent Journey is still a static empty state)
+- [x] Home's "Recent Journey" wired to real data (shows the 5 most recent Timeline Events); the rest of the Home Dashboard (Upcoming Festivals, Maintenance Reminders, Continue Editing) is still open
 
 ---
 
@@ -83,16 +83,21 @@ Festivals, write Journal Entries, and see them reflected in a real Timeline —
 the minimum needed for the app to function as a genuine field journal rather
 than a single-feature demo.
 
+**This is now met.** Basic Search and the global Capture (+) button remain
+as open Core Journey Objectives (polish, not blockers) before formally
+closing out v0.2.0.
+
 ---
 
 # Current Focus
 
-Gear, Makers, Festivals, Outfits (with version history), and Journal
-Entries are all built and verified working end to end (real photos, real
-relationships, real persistence, real version snapshots). A Journal Entry
-can tag specific Gear, Outfits, and multiple photos, and can be written
-either freely from the Journey hub or scoped to a specific Festival as its
-"Memories" section.
+Gear, Makers, Festivals, Outfits (with version history), Journal Entries,
+and Timeline are all built and verified working end to end (real photos,
+real relationships, real persistence, real version snapshots, real
+auto-generated history). The Journey hub — the core promise of this
+milestone — is functionally complete: a Wayfarer can record their gear,
+build outfits with a real version history, log festivals, write memories
+tied to any of it, and see all of it reflected chronologically.
 
 A mobile phase has been agreed as the next major phase after Core Journey,
 since capturing memories while walking around a festival — not sitting at a
@@ -106,11 +111,9 @@ approach (see the Keeper Log for the reasoning).
 
 # Next Task
 
-Timeline is the one remaining piece of the Journey hub, and needs a design
-decision on how it's auto-generated from other entities rather than
-manually maintained. The global Capture (+) button (Chapter 4) is also
-still open, and is a natural candidate before or alongside starting the
-mobile phase.
+The global Capture (+) button (Chapter 4: "the fastest action in the
+application") is the last open Core Journey item, and a natural candidate
+before or alongside starting the mobile phase.
 
 ---
 

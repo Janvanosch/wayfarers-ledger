@@ -164,6 +164,17 @@ const journalEntryOutfits = createJoinTable(
   "outfit_id",
 );
 
+const timelineEvents = createRepository("timeline_events", "timelineevent", [
+  { js: "id", db: "id" },
+  { js: "title", db: "title" },
+  { js: "relatedType", db: "related_type" },
+  { js: "relatedId", db: "related_id" },
+  { js: "occurredAt", db: "occurred_at" },
+  { js: "createdAt", db: "created_at" },
+  { js: "updatedAt", db: "updated_at" },
+  { js: "deletedAt", db: "deleted_at" },
+]);
+
 module.exports = {
   wayfarers,
   photos,
@@ -177,4 +188,5 @@ module.exports = {
   journalEntryPhotos,
   journalEntryGear,
   journalEntryOutfits,
+  timelineEvents,
 };

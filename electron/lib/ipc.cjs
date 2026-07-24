@@ -14,6 +14,7 @@ const {
   journalEntryPhotos,
   journalEntryGear,
   journalEntryOutfits,
+  timelineEvents,
 } = require("./repositories.cjs");
 const logger = require("./logger.cjs");
 
@@ -115,6 +116,18 @@ function addJournalEntryPhotos(journalEntryId, photoPaths) {
   }
 }
 
+// Timeline Events are generated from meaningful actions, never manually
+// created or edited from the UI - "not every database update becomes a
+// Timeline Event" (Chapter 4).
+function recordTimelineEvent(title, relatedType, relatedId) {
+  timelineEvents.create({
+    title,
+    relatedType: relatedType ?? null,
+    relatedId: relatedId ?? null,
+    occurredAt: new Date().toISOString(),
+  });
+}
+
 function getCurrentWayfarer() {
   const all = wayfarers.findAll();
   return all[0] || null;
@@ -160,7 +173,11 @@ function registerIpcHandlers(getWindow) {
     if (!folder) return { success: false, cancelled: true };
 
     vault.createLedger(folder, wayfarerName);
-    wayfarers.create({ name: wayfarerName, journeyStarted: new Date().toISOString() });
+    const wayfarer = wayfarers.create({
+      name: wayfarerName,
+      journeyStarted: new Date().toISOString(),
+    });
+    recordTimelineEvent("Journey Started", "wayfarer", wayfarer.id);
 
     return { success: true, status: getStatus() };
   });
@@ -182,7 +199,14 @@ function registerIpcHandlers(getWindow) {
   ipcMain.handle("gear:create", (_event, fields) => {
     const { photoPath, ...rest } = fields;
     const coverPhotoId = importPhotoIfProvided(photoPath);
-    return withGearExtras(gear.create({ ...rest, coverPhotoId }));
+    const isFirst = gear.findAll().length === 0;
+    const created = gear.create({ ...rest, coverPhotoId });
+    recordTimelineEvent(
+      isFirst ? `First Gear: ${created.name}` : `New Gear: ${created.name}`,
+      "gear",
+      created.id,
+    );
+    return withGearExtras(created);
   });
 
   ipcMain.handle("gear:update", (_event, id, fields) => {
@@ -231,7 +255,16 @@ function registerIpcHandlers(getWindow) {
   ipcMain.handle("festivals:create", (_event, fields) => {
     const { photoPath, ...rest } = fields;
     const coverPhotoId = importPhotoIfProvided(photoPath);
-    return withFestivalExtras(festivals.create({ ...rest, coverPhotoId }));
+    const isFirst = festivals.findAll().length === 0;
+    const created = festivals.create({ ...rest, coverPhotoId });
+    recordTimelineEvent(
+      isFirst
+        ? `First Festival: ${created.name}`
+        : `New Festival: ${created.name}`,
+      "festival",
+      created.id,
+    );
+    return withFestivalExtras(created);
   });
 
   ipcMain.handle("festivals:update", (_event, id, fields) => {
@@ -275,9 +308,14 @@ function registerIpcHandlers(getWindow) {
   ipcMain.handle("outfits:create", (_event, fields) => {
     const { photoPath, ...rest } = fields;
     const coverPhotoId = importPhotoIfProvided(photoPath);
-    return withOutfitExtras(
-      outfits.create({ ...rest, coverPhotoId, currentVersion: 0 }),
+    const isFirst = outfits.findAll().length === 0;
+    const created = outfits.create({ ...rest, coverPhotoId, currentVersion: 0 });
+    recordTimelineEvent(
+      isFirst ? `First Outfit: ${created.name}` : `New Outfit: ${created.name}`,
+      "outfit",
+      created.id,
     );
+    return withOutfitExtras(created);
   });
 
   ipcMain.handle("outfits:update", (_event, id, fields) => {
@@ -300,6 +338,11 @@ function registerIpcHandlers(getWindow) {
       notes: fields.notes ?? null,
     });
     outfits.update(outfitId, { currentVersion: nextVersion });
+    recordTimelineEvent(
+      `${outfit.name} — Version ${nextVersion}`,
+      "outfit",
+      outfitId,
+    );
 
     return withVersionGear(version);
   });
@@ -332,10 +375,16 @@ function registerIpcHandlers(getWindow) {
 
   ipcMain.handle("journal:create", (_event, fields) => {
     const { photoPaths, gearIds, outfitIds, ...rest } = fields;
+    const isFirst = journalEntries.findAll().length === 0;
     const entry = journalEntries.create(rest);
     addJournalEntryPhotos(entry.id, photoPaths);
     replaceLinks(journalEntryGear, entry.id, gearIds);
     replaceLinks(journalEntryOutfits, entry.id, outfitIds);
+    recordTimelineEvent(
+      isFirst ? "First Journal Entry" : `Journal Entry: ${entry.title || "Untitled"}`,
+      "journalEntry",
+      entry.id,
+    );
     return withJournalEntryExtras(entry);
   });
 
@@ -346,6 +395,11 @@ function registerIpcHandlers(getWindow) {
     if (gearIds !== undefined) replaceLinks(journalEntryGear, id, gearIds);
     if (outfitIds !== undefined) replaceLinks(journalEntryOutfits, id, outfitIds);
     return withJournalEntryExtras(updated);
+  });
+
+  ipcMain.handle("timeline:list", (_event, limit) => {
+    const events = timelineEvents.findAll();
+    return typeof limit === "number" ? events.slice(0, limit) : events;
   });
 
   logger.info("IPC handlers registered");

@@ -32,8 +32,8 @@ The backlog is intentionally organised by functional area rather than priority.
 # Home
 
 - [ ] Home Dashboard
-- [ ] Recent Journey
-- [ ] Quick Actions
+- [x] Recent Journey (now shows the 5 most recent real Timeline Events)
+- [x] Quick Actions
 - [ ] Upcoming Festivals
 - [ ] Maintenance Reminders
 - [ ] Continue Editing
@@ -42,7 +42,7 @@ The backlog is intentionally organised by functional area rather than priority.
 
 # Journey
 
-- [ ] Timeline
+- [x] Timeline (auto-generated from real actions; existing Vaults backfilled with their real history)
 - [x] Journal Entries
 - [x] Memories (Journal Entries can tag specific Gear, Outfits, and Photos)
 - [ ] Experience Notes

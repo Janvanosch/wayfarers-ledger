@@ -162,6 +162,15 @@ export interface JournalEntryFields {
   photoPaths?: string[];
 }
 
+export interface TimelineEvent {
+  id: string;
+  title: string;
+  relatedType: string | null;
+  relatedId: string | null;
+  occurredAt: string;
+  createdAt: string;
+}
+
 export interface LedgerApi {
   getStatus: () => Promise<LedgerStatus>;
   vault: {
@@ -215,6 +224,9 @@ export interface LedgerApi {
       id: string,
       fields: Partial<JournalEntryFields>,
     ) => Promise<JournalEntry>;
+  };
+  timeline: {
+    list: (limit?: number) => Promise<TimelineEvent[]>;
   };
 }
 

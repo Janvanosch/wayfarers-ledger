@@ -2,6 +2,7 @@ const fs = require("node:fs");
 const path = require("node:path");
 const initSqlJs = require("sql.js");
 const logger = require("./logger.cjs");
+const { generateId } = require("./ids.cjs");
 
 let SQL = null;
 let db = null;
@@ -164,7 +165,117 @@ const MIGRATIONS = [
       `);
     },
   },
+  {
+    version: 7,
+    up(database) {
+      database.run(`
+        CREATE TABLE timeline_events (
+          id TEXT PRIMARY KEY,
+          title TEXT NOT NULL,
+          related_type TEXT,
+          related_id TEXT,
+          occurred_at TEXT NOT NULL,
+          created_at TEXT NOT NULL,
+          updated_at TEXT NOT NULL,
+          deleted_at TEXT
+        );
+      `);
+      backfillTimelineEvents(database);
+    },
+  },
 ];
+
+function insertTimelineEvent(database, title, relatedType, relatedId, occurredAt) {
+  const id = generateId("timelineevent");
+  const now = new Date().toISOString();
+  database.run(
+    "INSERT INTO timeline_events (id, title, related_type, related_id, occurred_at, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?)",
+    [id, title, relatedType, relatedId, occurredAt, now, now],
+  );
+}
+
+function backfillFromTable(database, { table, relatedType, firstLabel, laterLabel }) {
+  const stmt = database.prepare(
+    `SELECT id, name, created_at FROM ${table} WHERE deleted_at IS NULL ORDER BY created_at ASC`,
+  );
+  let index = 0;
+  while (stmt.step()) {
+    const row = stmt.getAsObject();
+    const title = index === 0 ? firstLabel(row.name) : laterLabel(row.name);
+    insertTimelineEvent(database, title, relatedType, row.id, row.created_at);
+    index += 1;
+  }
+  stmt.free();
+}
+
+// Existing Vaults reaching this migration already have real history (Gear,
+// Festivals, Outfits, Journal Entries created before Timeline existed).
+// Without this, their Timeline would start out empty despite a Ledger full
+// of memories, which would look broken rather than simply "new feature."
+function backfillTimelineEvents(database) {
+  const wayfarerStmt = database.prepare(
+    "SELECT id, created_at FROM wayfarers WHERE deleted_at IS NULL ORDER BY created_at ASC",
+  );
+  while (wayfarerStmt.step()) {
+    const row = wayfarerStmt.getAsObject();
+    insertTimelineEvent(database, "Journey Started", "wayfarer", row.id, row.created_at);
+  }
+  wayfarerStmt.free();
+
+  backfillFromTable(database, {
+    table: "gear",
+    relatedType: "gear",
+    firstLabel: (name) => `First Gear: ${name}`,
+    laterLabel: (name) => `New Gear: ${name}`,
+  });
+
+  backfillFromTable(database, {
+    table: "festivals",
+    relatedType: "festival",
+    firstLabel: (name) => `First Festival: ${name}`,
+    laterLabel: (name) => `New Festival: ${name}`,
+  });
+
+  backfillFromTable(database, {
+    table: "outfits",
+    relatedType: "outfit",
+    firstLabel: (name) => `First Outfit: ${name}`,
+    laterLabel: (name) => `New Outfit: ${name}`,
+  });
+
+  const versionStmt = database.prepare(`
+    SELECT ov.outfit_id AS outfit_id, ov.version AS version, ov.created_at AS created_at, o.name AS outfit_name
+    FROM outfit_versions ov
+    JOIN outfits o ON o.id = ov.outfit_id
+    ORDER BY ov.created_at ASC
+  `);
+  while (versionStmt.step()) {
+    const row = versionStmt.getAsObject();
+    insertTimelineEvent(
+      database,
+      `${row.outfit_name} — Version ${row.version}`,
+      "outfit",
+      row.outfit_id,
+      row.created_at,
+    );
+  }
+  versionStmt.free();
+
+  const journalStmt = database.prepare(
+    "SELECT id, title, created_at FROM journal_entries WHERE deleted_at IS NULL ORDER BY created_at ASC",
+  );
+  let journalIndex = 0;
+  while (journalStmt.step()) {
+    const row = journalStmt.getAsObject();
+    const title =
+      journalIndex === 0
+        ? "First Journal Entry"
+        : `Journal Entry: ${row.title || "Untitled"}`;
+    insertTimelineEvent(database, title, "journalEntry", row.id, row.created_at);
+    journalIndex += 1;
+  }
+  journalStmt.free();
+}
 
 async function init() {
   if (!SQL) {

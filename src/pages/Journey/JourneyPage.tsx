@@ -12,15 +12,21 @@ import Cover from "../../components/ui/Cover";
 import FestivalForm from "./FestivalForm";
 import JournalEntryForm from "./JournalEntryForm";
 import JournalEntryCard from "./JournalEntryCard";
+import TimelineList from "../../shared/components/TimelineList";
 
 import type {
   Festival,
   FestivalFields,
   JournalEntry,
   JournalEntryFields,
+  TimelineEvent,
 } from "../../types/ledger";
 
 export default function JourneyPage() {
+  const [timelineEvents, setTimelineEvents] = useState<
+    TimelineEvent[] | "loading"
+  >("loading");
+
   const [festivals, setFestivals] = useState<Festival[] | "loading">(
     "loading",
   );
@@ -34,6 +40,7 @@ export default function JourneyPage() {
   const [entryBusy, setEntryBusy] = useState(false);
 
   useEffect(() => {
+    window.ledger.timeline.list().then(setTimelineEvents);
     window.ledger.festivals.list().then(setFestivals);
     window.ledger.journal.list().then(setEntries);
   }, []);
@@ -46,6 +53,7 @@ export default function JourneyPage() {
     setFestivals((current) =>
       current === "loading" ? [created] : [created, ...current],
     );
+    window.ledger.timeline.list().then(setTimelineEvents);
   }
 
   async function handleCreateEntry(fields: JournalEntryFields) {
@@ -56,6 +64,7 @@ export default function JourneyPage() {
     setEntries((current) =>
       current === "loading" ? [created] : [created, ...current],
     );
+    window.ledger.timeline.list().then(setTimelineEvents);
   }
 
   return (
@@ -67,6 +76,21 @@ export default function JourneyPage() {
             The chronological history of your Journey — festivals, memories,
             and everything in between.
           </Text>
+        </Stack>
+
+        <Stack gap={3}>
+          <Heading level={3}>Timeline</Heading>
+          {timelineEvents === "loading" && <Text muted>Loading…</Text>}
+          {timelineEvents !== "loading" && timelineEvents.length === 0 && (
+            <Card>
+              <Text muted>Your Journey hasn't begun yet.</Text>
+            </Card>
+          )}
+          {timelineEvents !== "loading" && timelineEvents.length > 0 && (
+            <Card>
+              <TimelineList events={timelineEvents} />
+            </Card>
+          )}
         </Stack>
 
         <Stack direction="row" justify="between" align="center">

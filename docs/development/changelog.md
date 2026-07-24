@@ -91,6 +91,8 @@ Keep entries brief, clear and focused on meaningful changes.
 - Journal Entries: free-form written memories, optionally tied to a Festival, that can tag specific Gear, Outfits, and multiple photos — matching Chapter 4's Journal Entry/Photo relationships. Addable from the Journey hub (untied or tied to any Festival) or directly from a Festival's own page (pre-locked to that Festival, shown as its "Memories" section)
 - `Textarea` component, and shared `GearMultiPicker`/`OutfitMultiPicker`/`MultiPhotoPicker` components for tagging multiple items onto a Journal Entry
 - Generalised the many-to-many join-table logic (`electron/lib/repository.cjs`'s `createJoinTable`) so new relationships like Journal Entry ↔ Gear/Outfits/Photos don't need bespoke SQL each time; the existing Gear ↔ Festival link was refactored onto it too
+- Timeline: auto-generated from real actions (new Gear, new Festival, new Outfit + each Version, new Journal Entry), never manually created — matching "Timeline Events are generated from meaningful actions." The first of each kind is labelled specially ("First Gear," "First Festival," ...) per the Bible's "Celebrate Milestones, Not Progress" principle. Shown in full on the Journey hub and as the 5 most recent on Home's "Recent Journey" (previously a static empty state)
+- Existing Vaults are backfilled with real Timeline history from their existing Gear/Festivals/Outfits/Journal Entries on upgrade, so the Timeline doesn't start out empty despite a Ledger full of memories
 
 ### Fixed
 - App rendered a blank page because `<Routes>` was used outside a `<BrowserRouter>`

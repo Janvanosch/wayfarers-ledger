@@ -103,12 +103,17 @@ Completed:
 - Journal Entries are reachable two ways: from the Journey hub (optionally tagged to any Festival via a dropdown) and from a Festival's own detail page as its "Memories" section (pre-locked to that Festival, no picker needed).
 - Verified end to end: wrote a real entry ("Zin in Castlefest!") with a photo, tied to Castlefest 2026, confirmed the `journal_entries` and `journal_entry_photos` rows directly in the `.ledger` file, and confirmed the `gear_festivals` refactor left the existing Beige Pants ↔ Castlefest 2026 link untouched.
 
+- Built Timeline: a `timeline_events` table (migration 7), auto-generated (never manually created) from real actions — new Gear, new Festival, new Outfit plus every Version, new Journal Entry, and the Wayfarer's own "Journey Started." The first of each kind gets a special title ("First Gear: ...", "First Festival: ...") per Chapter 3's "Celebrate Milestones, Not Progress"; later ones get a plain descriptive title ("New Gear: ...", matching "Outfit Version 3" style examples from Chapter 2).
+- Realised existing Vaults (Jan's included) already had real history — Beige Pants, Castlefest 2026, Veteran Knight, the journal entry — created before Timeline existed. Rather than let Timeline start out empty for them (which would look broken, not like a new feature), wrote a backfill directly into migration 7 that reconstructs Timeline Events from each table's existing rows, using their real `created_at` timestamps so the order is accurate.
+- Wired Timeline into two places: the full history at the top of the Journey hub, and the 5 most recent events on Home's "Recent Journey" (previously a static "no journeys yet" placeholder — now genuinely shows real activity).
+- Verified end to end: confirmed the 6 backfilled events matched Jan's actual usage history in the correct chronological order by reading them directly from the `.ledger` file, then confirmed visually on both the Journey page and Home.
+
 Next:
 - Icons and further Forms polish are still open Design System items; build them when a feature needs them rather than speculatively.
 - Gear History, Gear Maintenance, Tags, and Archive Gear (soft delete UI) remain open Gear backlog items.
-- Timeline is the one remaining piece of the Journey hub — it needs a design decision on how it's generated from the other entities (Gear created, Outfit versioned, Journal Entry written, ...) rather than manually maintained, per Chapter 4's "Timeline Events are generated from meaningful actions."
 - Experience Notes (per-Gear practical notes like "needed thicker socks") are a distinct, smaller concept from Journal Entries and still open.
-- The global Capture (+) button (Chapter 4: "the fastest action in the application") is still open — a good candidate before or alongside starting the mobile phase.
+- The Journey hub (Timeline, Festivals, Journal Entries/Memories) is now functionally complete. The global Capture (+) button (Chapter 4: "the fastest action in the application") is the last open Core Journey item, and a good candidate before or alongside starting the mobile phase.
+- Mobile phase: investigate Capacitor for wrapping the existing React frontend, and design a cloud-sync-based storage approach to replace direct Vault folder access (Dropbox/Google Drive APIs are the likely candidates) once desktop features are further along.
 - Mobile phase: investigate Capacitor for wrapping the existing React frontend, and design a cloud-sync-based storage approach to replace direct Vault folder access (Dropbox/Google Drive APIs are the likely candidates) once desktop features are further along.
 
 ## In Progress
