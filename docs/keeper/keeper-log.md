@@ -61,9 +61,15 @@ Completed:
 - Created the global styling architecture.
 - Added design tokens for colors, typography, spacing, radius, shadows, and transitions.
 - Connected the global stylesheet pipeline through `main.tsx`.
+- Fixed a bug where the app rendered a blank page: `AppRoutes` used `<Routes>` without a `<BrowserRouter>` ancestor.
+- Built the remaining UI component library: Text, Stack, Surface, Card, Button.
+- Rebuilt the Home page (Hero, Quick Actions, Recent Journey) and the app shell (Header, Footer) to use the design system components and tokens exclusively, removing hardcoded colours and spacing.
+- Verified the app renders correctly and typechecks cleanly.
 
 Next:
-- Build the reusable UI component library, starting with the Container component.
+- Icons and Forms are still open Design System items; build them when a feature needs them rather than speculatively.
+- The `Inter` and `Cormorant Garamond` fonts are referenced in tokens but never loaded, so headings currently fall back to Georgia/system fonts. Needs a font-loading strategy (self-hosted, per Privacy/Offline-First principles — avoid a Google Fonts CDN dependency).
+- Begin Core Infrastructure: decide the offline storage approach (SQLite-in-browser vs. IndexedDB-backed repository) and record it as the project's first ADR before implementing.
 
 ---
 

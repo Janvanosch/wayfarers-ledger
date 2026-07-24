@@ -70,6 +70,12 @@ Keep entries brief, clear and focused on meaningful changes.
 - Global styling architecture
 - Design token system
 - UI component folder structure
+- Reusable UI components: Text, Stack, Surface, Card, Button
+- Home page now composed entirely from design system components
+
+### Fixed
+- App rendered a blank page because `<Routes>` was used outside a `<BrowserRouter>`
+- Header and Footer used hardcoded colours and spacing instead of design tokens
 
 ### Removed
 - Vite starter CSS

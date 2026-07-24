@@ -1,3 +1,4 @@
 .home-page {
-  max-width: 900px;
+  max-width: var(--content-width);
+  padding-block: var(--space-7);
 }

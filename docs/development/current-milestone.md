@@ -42,14 +42,14 @@ Complete the following foundations.
 
 ## Design System
 
-- [ ] Colour palette
-- [ ] Typography
-- [ ] Spacing system
-- [ ] Buttons
-- [ ] Cards
+- [x] Colour palette
+- [x] Typography
+- [x] Spacing system
+- [x] Buttons
+- [x] Cards
 - [ ] Icons
 - [ ] Forms
-- [ ] Layout components
+- [x] Layout components (Container, Stack, Surface)
 
 ---
 
@@ -96,15 +96,15 @@ This milestone is complete when:
 
 Current task:
 
-**Complete the project documentation before feature development begins.**
+**Begin Core Infrastructure: local storage, SQLite, and the repository pattern.**
 
 ---
 
 # Next Task
 
-Finish the remaining development documentation.
+Decide on the storage approach for an offline-first PWA (SQLite-in-browser vs. IndexedDB-backed repository) and record the decision as an ADR before implementing it.
 
-Afterwards, begin implementation of the design system.
+Icons and Forms remain open items in the Design System and can be built as needed by upcoming features rather than up front.
 
 ---
 
@@ -123,7 +123,8 @@ When the milestone changes, update this document before starting the next major 
 - [x] Folder architecture
 - [x] Global styling
 - [x] Design tokens
+- [x] Reusable UI components (Container, Heading, Text, Stack, Surface, Card, Button)
+- [x] Home page layout
 
-⬜ Reusable UI components
-⬜ Home page layout
 ⬜ Journey feature foundation
+⬜ Core infrastructure (SQLite, repository pattern, local vault)

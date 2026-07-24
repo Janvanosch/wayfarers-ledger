@@ -1,3 +1,7 @@
 .quick-actions {
-  margin-bottom: 3rem;
+  margin-bottom: var(--space-7);
+}
+
+.quick-actions > .wl-heading {
+  margin-bottom: var(--space-4);
 }

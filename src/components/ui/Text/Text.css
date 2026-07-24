@@ -1,0 +1,22 @@
+.wl-text {
+  margin: 0;
+  font-family: var(--font-body);
+  line-height: var(--line-height-normal);
+  color: var(--color-text);
+}
+
+.wl-text-sm {
+  font-size: var(--font-size-sm);
+}
+
+.wl-text-md {
+  font-size: var(--font-size-md);
+}
+
+.wl-text-lg {
+  font-size: var(--font-size-lg);
+}
+
+.wl-text-muted {
+  color: var(--color-text-muted);
+}

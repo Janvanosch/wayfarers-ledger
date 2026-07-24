@@ -1,3 +1,7 @@
 .recent-journey {
-  margin-bottom: 2rem;
+  margin-bottom: var(--space-6);
+}
+
+.recent-journey > .wl-heading {
+  margin-bottom: var(--space-4);
 }

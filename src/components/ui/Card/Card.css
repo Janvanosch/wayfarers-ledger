@@ -1,0 +1,16 @@
+.wl-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  padding: var(--space-5);
+}
+
+.wl-card-interactive {
+  transition: box-shadow var(--transition-normal), transform var(--transition-normal);
+}
+
+.wl-card-interactive:hover {
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+}

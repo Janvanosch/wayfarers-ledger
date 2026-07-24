@@ -1,3 +1,7 @@
 .home-hero {
-  margin-bottom: 3rem;
+  margin-bottom: var(--space-7);
+}
+
+.home-hero > .wl-heading {
+  margin-bottom: var(--space-3);
 }
