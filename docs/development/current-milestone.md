@@ -26,7 +26,7 @@ Complete the following foundations.
 - [x] Documentation structure
 - [x] Development documentation
 - [x] Keeper Log
-- [x] First ADR (ADR-001 — Use Electron)
+- [x] First ADR (ADR-001 — Use Electron, ADR-002 — Use sql.js)
 
 ---
 
@@ -56,13 +56,13 @@ Complete the following foundations.
 
 ## Core Infrastructure
 
-- [ ] SQLite integration
-- [ ] Repository pattern
-- [ ] Local storage abstraction
-- [ ] Image storage
-- [ ] UUID generation
-- [ ] Logging
-- [ ] Settings management
+- [x] SQLite integration (sql.js — see ADR-002)
+- [x] Repository pattern
+- [x] Local storage abstraction (the Vault: folder picker, structure, remembered path)
+- [ ] Image storage (Photos folder exists in the Vault structure; import/checksum logic not yet built — no feature needs it yet)
+- [x] UUID generation
+- [x] Logging
+- [x] Settings management
 
 ---
 
@@ -95,17 +95,21 @@ This milestone is complete when:
 
 # Current Focus
 
-Current task:
+The Foundation milestone is essentially complete. A Wayfarer can now go
+through first-run setup, get a real `.ledger` file created in a Vault folder
+of their choosing (verified working inside their own Dropbox folder), and
+have the app remember and reopen it automatically on every future launch.
 
-**Begin Core Infrastructure: SQLite integration and the repository pattern, now that the app runs as an installed Electron application (ADR-001) with real filesystem access.**
+Remaining open items (Icons, Forms polish, Image storage) are deliberately
+deferred until a feature actually needs them, per Progressive Completion.
 
 ---
 
 # Next Task
 
-Implement SQLite access in the Electron main process (e.g. `better-sqlite3`), define the repository pattern the React frontend uses to read/write data via IPC, and wire up the Vault folder picker.
-
-Icons and Forms remain open items in the Design System and can be built as needed by upcoming features rather than up front.
+Decide the first real feature to build against this foundation (the Gear
+Library is the natural first candidate per the Phase 2 roadmap) and give it
+its own repository, following the pattern in `electron/lib/repository.cjs`.
 
 ---
 
@@ -124,8 +128,8 @@ When the milestone changes, update this document before starting the next major 
 - [x] Folder architecture
 - [x] Global styling
 - [x] Design tokens
-- [x] Reusable UI components (Container, Heading, Text, Stack, Surface, Card, Button)
+- [x] Reusable UI components (Container, Heading, Text, Stack, Surface, Card, Button, Input)
 - [x] Home page layout
+- [x] Core infrastructure (SQLite via sql.js, repository pattern, local Vault, Wayfarer onboarding)
 
-⬜ Journey feature foundation
-⬜ Core infrastructure (SQLite, repository pattern, local vault)
+⬜ Journey feature foundation (first real feature — Gear Library is the likely candidate)

@@ -1,2 +1,10 @@
-// Reserved for the Vault/SQLite bridge (contextBridge.exposeInMainWorld),
-// to be added when Core Infrastructure storage is implemented.
+const { contextBridge, ipcRenderer } = require("electron");
+
+contextBridge.exposeInMainWorld("ledger", {
+  getStatus: () => ipcRenderer.invoke("ledger:getStatus"),
+  vault: {
+    chooseExisting: () => ipcRenderer.invoke("ledger:vault:chooseExisting"),
+    createNew: (wayfarerName) =>
+      ipcRenderer.invoke("ledger:vault:createNew", wayfarerName),
+  },
+});

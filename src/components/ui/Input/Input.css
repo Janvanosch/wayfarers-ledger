@@ -1,0 +1,25 @@
+.wl-input {
+  width: 100%;
+  min-height: 44px;
+
+  padding: var(--space-3) var(--space-4);
+
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  color: var(--color-text);
+
+  font-family: var(--font-body);
+  font-size: var(--font-size-md);
+
+  transition: border-color var(--transition-fast);
+}
+
+.wl-input:focus {
+  border-color: var(--color-primary);
+  outline: none;
+}
+
+.wl-input::placeholder {
+  color: var(--color-text-muted);
+}

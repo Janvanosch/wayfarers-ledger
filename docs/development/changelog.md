@@ -75,6 +75,10 @@ Keep entries brief, clear and focused on meaningful changes.
 
 - Self-hosted `Inter` and `Cormorant Garamond` variable fonts (no external CDN dependency)
 - Electron application shell (ADR-001) so the app runs as an installed desktop program with real filesystem access, instead of a browser-only PWA
+- Real SQLite-backed Ledger storage using sql.js (ADR-002): the Vault folder, `.ledger` file, and Wayfarer identity are now created and remembered for real
+- First-run onboarding (`VaultSetup`) to create or open a Vault and name the Wayfarer
+- Generic repository pattern (`electron/lib/repository.cjs`) for future entities (Gear, Festivals, ...) to build on
+- `Input` component
 
 ### Fixed
 - App rendered a blank page because `<Routes>` was used outside a `<BrowserRouter>`

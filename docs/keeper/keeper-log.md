@@ -71,9 +71,16 @@ Completed:
 - Decided, with Jan, to package the app as an installed desktop application instead of a website — see **ADR-001**. Chose Electron over Tauri to avoid introducing a new (Rust) toolchain, at the cost of a larger installed size.
 - Added the Electron application shell: `electron/main.cjs` (opens a native window, loads the Vite dev server in development / `dist/index.html` in production) and `electron/preload.cjs` (currently empty, reserved for the future Vault/SQLite bridge). Added `npm run electron:dev` and `npm run electron:build` scripts and an `electron-builder` config in `package.json`.
 
+- Attempted `better-sqlite3` for the Ledger database; it requires a native compiler toolchain (Python + a C++ compiler) not present on this machine, which would have undercut the whole point of choosing Electron over Tauri. Switched to `sql.js` (WebAssembly SQLite, no native compilation) — see **ADR-002**.
+- Built the Core Infrastructure layer in `electron/lib/`: `logger.cjs`, `settings.cjs` (app config, separate from Vault data), `ids.cjs` (`prefix_XXXXXX` IDs matching the Bible's examples), `database.cjs` (sql.js open/save/migrations), `repository.cjs` (generic create/findById/findAll/update/softDelete factory), `vault.cjs` (folder picking, Vault structure, Ledger file creation/reopening), and `ipc.cjs` wiring it all to the renderer via `preload.cjs`'s `window.ledger` API.
+- Built the first-run onboarding screen (`src/pages/VaultSetup`) and a new `Input` component. A Wayfarer can now either create a new Vault (name + folder picker) or open an existing one.
+- Verified the entire flow for real, end to end: created a Vault in Jan's actual Dropbox folder, confirmed the `.ledger` file and folder structure (`Photos`/`Documents`/`Backups`/`Exports`) on disk, read the Wayfarer row back out of the SQLite file directly, restarted the app and confirmed it reopens the remembered Vault automatically with no setup screen, and confirmed visually (screenshot) that the Home page shows "Welcome back, Jan."
+- The Foundation milestone (v0.1.0) is now essentially complete.
+
 Next:
-- Icons and Forms are still open Design System items; build them when a feature needs them rather than speculatively.
-- Implement SQLite in the Electron main process (e.g. `better-sqlite3`) and the repository pattern the React frontend will use to read/write data over IPC, plus the Vault folder picker.
+- Icons and further Forms polish are still open Design System items; build them when a feature needs them rather than speculatively.
+- Image storage (photo import/checksum into the Vault's `Photos` folder) is deferred until a feature needs it.
+- Pick the first real feature to build on this foundation — the Gear Library is the natural candidate per the Phase 2 roadmap.
 
 ---
 
