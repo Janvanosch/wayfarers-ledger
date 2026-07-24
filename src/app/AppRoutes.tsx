@@ -9,6 +9,8 @@ import JourneyPage from "../pages/Journey/JourneyPage";
 import FestivalDetailPage from "../pages/Journey/FestivalDetailPage";
 import OutfitListPage from "../pages/Outfits/OutfitListPage";
 import OutfitDetailPage from "../pages/Outfits/OutfitDetailPage";
+import WishlistListPage from "../pages/Wishlist/WishlistListPage";
+import WishlistDetailPage from "../pages/Wishlist/WishlistDetailPage";
 
 export default function AppRoutes() {
   return (
@@ -22,6 +24,8 @@ export default function AppRoutes() {
       <Route path="/festivals/:id" element={<FestivalDetailPage />} />
       <Route path="/outfits" element={<OutfitListPage />} />
       <Route path="/outfits/:id" element={<OutfitDetailPage />} />
+      <Route path="/wishlist" element={<WishlistListPage />} />
+      <Route path="/wishlist/:id" element={<WishlistDetailPage />} />
     </Routes>
   );
 }

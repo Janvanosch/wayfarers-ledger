@@ -175,6 +175,19 @@ const timelineEvents = createRepository("timeline_events", "timelineevent", [
   { js: "deletedAt", db: "deleted_at" },
 ]);
 
+const wishlistItems = createRepository("wishlist_items", "wishlistitem", [
+  { js: "id", db: "id" },
+  { js: "name", db: "name" },
+  { js: "makerId", db: "maker_id" },
+  { js: "coverPhotoId", db: "cover_photo_id" },
+  { js: "isFavourite", db: "is_favourite" },
+  { js: "notes", db: "notes" },
+  { js: "url", db: "url" },
+  { js: "createdAt", db: "created_at" },
+  { js: "updatedAt", db: "updated_at" },
+  { js: "deletedAt", db: "deleted_at" },
+]);
+
 module.exports = {
   wayfarers,
   photos,
@@ -189,4 +202,5 @@ module.exports = {
   journalEntryGear,
   journalEntryOutfits,
   timelineEvents,
+  wishlistItems,
 };

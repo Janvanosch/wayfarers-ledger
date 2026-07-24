@@ -108,12 +108,17 @@ Completed:
 - Wired Timeline into two places: the full history at the top of the Journey hub, and the 5 most recent events on Home's "Recent Journey" (previously a static "no journeys yet" placeholder — now genuinely shows real activity).
 - Verified end to end: confirmed the 6 backfilled events matched Jan's actual usage history in the correct chronological order by reading them directly from the `.ledger` file, then confirmed visually on both the Journey page and Home.
 
+- Jan flagged that the global Capture (+) button matters far more for mobile than for the current desktop app, and asked to build Wishlist instead. Checked the actual current docs (`02-terminology.md`, `03-information-architecture.md`, `04-domain-model.md`) rather than assume: Wishlist is confirmed as its own top-level section — "ideas for future Gear... remembering possibilities, not managing priorities," items may be marked Favourite, and "a Wishlist Item may later become a Gear item."
+- Built Wishlist: `wishlist_items` table (migration 8) — name, Maker, cover photo, `isFavourite`, notes — following the exact same list/detail/form pattern as Gear/Makers/Festivals/Outfits. "✨ Convert to Gear" (on the detail page) creates a real Gear item carrying over name/Maker/photo, then soft-deletes the Wishlist entry rather than losing it outright, matching "When purchased... no information is lost."
+- Replaced the still-unbuilt, Jan-deprioritised "Packing Lists" Home quick action with "Wishlist."
+- Jan then asked for a Link field plus automatic photo fetching from that link. Added a `url` column (migration 9) and a new `electron/lib/linkPreview.cjs`: given a URL, fetches the page, looks for its `og:image`/`twitter:image` meta tag (what most shop/product pages already expose for link previews), downloads it to a temp file, and hands that back to the existing photo-import pipeline unchanged. Deliberately built as an explicit "Fetch photo from link" button rather than automatic-on-paste, per Chapter 7: network activity should be something the Wayfarer chooses, not something that happens silently.
+- Verified the fetch logic directly against a real URL before touching the UI (confirmed a real, valid 1200×630 PNG was downloaded), then verified the full flow end to end in the app and confirmed the resulting rows (Link and cover photo both populated correctly) directly in the `.ledger` file.
+
 Next:
 - Icons and further Forms polish are still open Design System items; build them when a feature needs them rather than speculatively.
 - Gear History, Gear Maintenance, Tags, and Archive Gear (soft delete UI) remain open Gear backlog items.
 - Experience Notes (per-Gear practical notes like "needed thicker socks") are a distinct, smaller concept from Journal Entries and still open.
-- The Journey hub (Timeline, Festivals, Journal Entries/Memories) is now functionally complete. The global Capture (+) button (Chapter 4: "the fastest action in the application") is the last open Core Journey item, and a good candidate before or alongside starting the mobile phase.
-- Mobile phase: investigate Capacitor for wrapping the existing React frontend, and design a cloud-sync-based storage approach to replace direct Vault folder access (Dropbox/Google Drive APIs are the likely candidates) once desktop features are further along.
+- The global Capture (+) button (Chapter 4: "the fastest action in the application") remains open but is lower priority for desktop per Jan; likely more relevant once the mobile phase begins.
 - Mobile phase: investigate Capacitor for wrapping the existing React frontend, and design a cloud-sync-based storage approach to replace direct Vault folder access (Dropbox/Google Drive APIs are the likely candidates) once desktop features are further along.
 
 ## In Progress

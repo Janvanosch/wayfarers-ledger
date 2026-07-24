@@ -70,8 +70,9 @@ Phase 2 of the roadmap.
 - [x] Journey hub page (`/journey`) with a working Festival Library (list, detail, quick-capture create, edit) and Gear↔Festival "Seen at" linking
 - [x] Journal Entries (title/body, optional Festival, tagged Gear/Outfits, multiple photos), reachable from the Journey hub or as a Festival's "Memories" section
 - [x] Timeline, auto-generated from real actions (never manually created), with existing Vaults backfilled with their real history
+- [x] Wishlist (name, Maker, photo, Favourite, Notes, Link with one-click photo fetch), with "Convert to Gear"
 - [ ] Basic Search
-- [ ] Global Capture (+) button
+- [ ] Global Capture (+) button (deprioritised for desktop per Jan — more relevant once the mobile phase begins)
 - [x] Home's "Recent Journey" wired to real data (shows the 5 most recent Timeline Events); the rest of the Home Dashboard (Upcoming Festivals, Maintenance Reminders, Continue Editing) is still open
 
 ---
@@ -111,9 +112,10 @@ approach (see the Keeper Log for the reasoning).
 
 # Next Task
 
-The global Capture (+) button (Chapter 4: "the fastest action in the
-application") is the last open Core Journey item, and a natural candidate
-before or alongside starting the mobile phase.
+Basic Search is the last open Core Journey item with no dependency on the
+mobile phase. The global Capture (+) button (Chapter 4) remains open but is
+deprioritised for desktop; it likely belongs alongside the mobile phase
+instead, per Jan.
 
 ---
 

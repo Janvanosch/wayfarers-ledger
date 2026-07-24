@@ -1,0 +1,27 @@
+.wishlist-detail-page {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+
+  max-width: var(--container-width);
+  padding-block: var(--space-7);
+}
+
+.wishlist-detail-hero {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  max-width: var(--content-width);
+}
+
+.wishlist-detail-hero .wl-cover {
+  max-height: 420px;
+  border-radius: var(--radius-lg);
+}
+
+.wishlist-detail-hero-body {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-2);
+}

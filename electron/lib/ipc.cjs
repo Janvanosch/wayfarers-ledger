@@ -1,6 +1,7 @@
 const { ipcMain, dialog } = require("electron");
 const vault = require("./vault.cjs");
 const database = require("./database.cjs");
+const linkPreview = require("./linkPreview.cjs");
 const {
   wayfarers,
   photos,
@@ -15,6 +16,7 @@ const {
   journalEntryGear,
   journalEntryOutfits,
   timelineEvents,
+  wishlistItems,
 } = require("./repositories.cjs");
 const logger = require("./logger.cjs");
 
@@ -61,6 +63,17 @@ function withFestivalExtras(item) {
 function withOutfitExtras(item) {
   if (!item) return item;
   return { ...item, coverPhotoFilename: photoFilename(item.coverPhotoId) };
+}
+
+function withWishlistExtras(item) {
+  if (!item) return item;
+  const maker = item.makerId ? makers.findById(item.makerId) : null;
+  return {
+    ...item,
+    isFavourite: Boolean(item.isFavourite),
+    coverPhotoFilename: photoFilename(item.coverPhotoId),
+    makerName: maker ? maker.name : null,
+  };
 }
 
 function resolveGearSummaries(gearIds) {
@@ -400,6 +413,73 @@ function registerIpcHandlers(getWindow) {
   ipcMain.handle("timeline:list", (_event, limit) => {
     const events = timelineEvents.findAll();
     return typeof limit === "number" ? events.slice(0, limit) : events;
+  });
+
+  ipcMain.handle("wishlist:list", () =>
+    wishlistItems.findAll().map(withWishlistExtras),
+  );
+
+  ipcMain.handle("wishlist:get", (_event, id) =>
+    withWishlistExtras(wishlistItems.findById(id)),
+  );
+
+  ipcMain.handle("wishlist:create", (_event, fields) => {
+    const { photoPath, isFavourite, ...rest } = fields;
+    const coverPhotoId = importPhotoIfProvided(photoPath);
+    return withWishlistExtras(
+      wishlistItems.create({
+        ...rest,
+        coverPhotoId,
+        isFavourite: isFavourite ? 1 : 0,
+      }),
+    );
+  });
+
+  ipcMain.handle("wishlist:fetchImageFromUrl", async (_event, url) => {
+    try {
+      const tempPath = await linkPreview.fetchPreviewImage(url);
+      if (!tempPath) {
+        return { success: false, error: "No photo could be found at that link." };
+      }
+      return { success: true, photoPath: tempPath };
+    } catch (error) {
+      logger.warn("Failed to fetch preview image", { url, error: error.message });
+      return { success: false, error: error.message };
+    }
+  });
+
+  ipcMain.handle("wishlist:update", (_event, id, fields) => {
+    const { photoPath, isFavourite, ...rest } = fields;
+    if (photoPath) {
+      rest.coverPhotoId = importPhotoIfProvided(photoPath);
+    }
+    if (isFavourite !== undefined) {
+      rest.isFavourite = isFavourite ? 1 : 0;
+    }
+    return withWishlistExtras(wishlistItems.update(id, rest));
+  });
+
+  // "When purchased: Wishlist Item -> Convert to Gear. No information is
+  // lost" - creates a real Gear item from what's already known, then
+  // soft-deletes the Wishlist entry rather than losing it outright.
+  ipcMain.handle("wishlist:convertToGear", (_event, id) => {
+    const item = wishlistItems.findById(id);
+    if (!item) return null;
+
+    const isFirst = gear.findAll().length === 0;
+    const created = gear.create({
+      name: item.name,
+      makerId: item.makerId,
+      coverPhotoId: item.coverPhotoId,
+    });
+    recordTimelineEvent(
+      isFirst ? `First Gear: ${created.name}` : `New Gear: ${created.name}`,
+      "gear",
+      created.id,
+    );
+    wishlistItems.softDelete(id);
+
+    return withGearExtras(created);
   });
 
   logger.info("IPC handlers registered");

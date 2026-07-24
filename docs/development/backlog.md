@@ -87,10 +87,10 @@ The backlog is intentionally organised by functional area rather than priority.
 
 # Wishlist
 
-- [ ] Wishlist
+- [x] Wishlist (with a Link field and one-click "fetch photo from link")
 - [ ] Inspiration
-- [ ] Favourite Items
-- [ ] Convert Wishlist Item to Gear
+- [x] Favourite Items
+- [x] Convert Wishlist Item to Gear
 
 ---
 

@@ -1,0 +1,20 @@
+.wishlist-form {
+  width: 100%;
+}
+
+.wishlist-form-field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.wishlist-form-favourite {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.wishlist-form-favourite input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+}

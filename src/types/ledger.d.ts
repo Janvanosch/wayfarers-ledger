@@ -162,6 +162,36 @@ export interface JournalEntryFields {
   photoPaths?: string[];
 }
 
+export interface WishlistItem {
+  id: string;
+  name: string;
+  makerId: string | null;
+  makerName: string | null;
+  coverPhotoId: string | null;
+  coverPhotoFilename: string | null;
+  isFavourite: boolean;
+  notes: string | null;
+  url: string | null;
+  createdAt: string;
+  updatedAt: string;
+  deletedAt: string | null;
+}
+
+export interface WishlistImageFetchResult {
+  success: boolean;
+  photoPath?: string;
+  error?: string;
+}
+
+export interface WishlistItemFields {
+  name: string;
+  makerId?: string | null;
+  photoPath?: string | null;
+  isFavourite?: boolean;
+  notes?: string | null;
+  url?: string | null;
+}
+
 export interface TimelineEvent {
   id: string;
   title: string;
@@ -227,6 +257,17 @@ export interface LedgerApi {
   };
   timeline: {
     list: (limit?: number) => Promise<TimelineEvent[]>;
+  };
+  wishlist: {
+    list: () => Promise<WishlistItem[]>;
+    get: (id: string) => Promise<WishlistItem | null>;
+    create: (fields: WishlistItemFields) => Promise<WishlistItem>;
+    update: (
+      id: string,
+      fields: Partial<WishlistItemFields>,
+    ) => Promise<WishlistItem>;
+    convertToGear: (id: string) => Promise<Gear>;
+    fetchImageFromUrl: (url: string) => Promise<WishlistImageFetchResult>;
   };
 }
 

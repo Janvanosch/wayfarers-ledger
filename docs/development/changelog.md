@@ -93,6 +93,8 @@ Keep entries brief, clear and focused on meaningful changes.
 - Generalised the many-to-many join-table logic (`electron/lib/repository.cjs`'s `createJoinTable`) so new relationships like Journal Entry ↔ Gear/Outfits/Photos don't need bespoke SQL each time; the existing Gear ↔ Festival link was refactored onto it too
 - Timeline: auto-generated from real actions (new Gear, new Festival, new Outfit + each Version, new Journal Entry), never manually created — matching "Timeline Events are generated from meaningful actions." The first of each kind is labelled specially ("First Gear," "First Festival," ...) per the Bible's "Celebrate Milestones, Not Progress" principle. Shown in full on the Journey hub and as the 5 most recent on Home's "Recent Journey" (previously a static empty state)
 - Existing Vaults are backfilled with real Timeline history from their existing Gear/Festivals/Outfits/Journal Entries on upgrade, so the Timeline doesn't start out empty despite a Ledger full of memories
+- Wishlist: name, Maker, photo, Favourite, and Notes, following the same pattern as Gear/Makers/Festivals/Outfits. "✨ Convert to Gear" creates a real Gear item from a Wishlist entry and archives the original ("When purchased... no information is lost")
+- Wishlist items can hold a Link, with an explicit "Fetch photo from link" action that reads the page's preview image (the same `og:image`/`twitter:image` tags most shop/product pages already provide) and imports it as the cover photo — no network activity happens without the Wayfarer clicking that button
 
 ### Fixed
 - App rendered a blank page because `<Routes>` was used outside a `<BrowserRouter>`

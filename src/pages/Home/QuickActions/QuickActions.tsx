@@ -10,7 +10,7 @@ const actions = [
   { label: "View Gear", icon: "🎒", to: "/gear" },
   { label: "Outfits", icon: "🛡", to: "/outfits" },
   { label: "Journey", icon: "🗺", to: "/journey" },
-  { label: "Packing Lists", icon: "📦", to: null },
+  { label: "Wishlist", icon: "✨", to: "/wishlist" },
 ];
 
 export default function QuickActions() {

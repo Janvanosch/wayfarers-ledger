@@ -56,4 +56,13 @@ contextBridge.exposeInMainWorld("ledger", {
   timeline: {
     list: (limit) => ipcRenderer.invoke("timeline:list", limit),
   },
+  wishlist: {
+    list: () => ipcRenderer.invoke("wishlist:list"),
+    get: (id) => ipcRenderer.invoke("wishlist:get", id),
+    create: (fields) => ipcRenderer.invoke("wishlist:create", fields),
+    update: (id, fields) => ipcRenderer.invoke("wishlist:update", id, fields),
+    convertToGear: (id) => ipcRenderer.invoke("wishlist:convertToGear", id),
+    fetchImageFromUrl: (url) =>
+      ipcRenderer.invoke("wishlist:fetchImageFromUrl", url),
+  },
 });

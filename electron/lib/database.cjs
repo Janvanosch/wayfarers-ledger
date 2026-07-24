@@ -183,6 +183,30 @@ const MIGRATIONS = [
       backfillTimelineEvents(database);
     },
   },
+  {
+    version: 8,
+    up(database) {
+      database.run(`
+        CREATE TABLE wishlist_items (
+          id TEXT PRIMARY KEY,
+          name TEXT NOT NULL,
+          maker_id TEXT REFERENCES makers(id),
+          cover_photo_id TEXT REFERENCES photos(id),
+          is_favourite INTEGER NOT NULL DEFAULT 0,
+          notes TEXT,
+          created_at TEXT NOT NULL,
+          updated_at TEXT NOT NULL,
+          deleted_at TEXT
+        );
+      `);
+    },
+  },
+  {
+    version: 9,
+    up(database) {
+      database.run("ALTER TABLE wishlist_items ADD COLUMN url TEXT;");
+    },
+  },
 ];
 
 function insertTimelineEvent(database, title, relatedType, relatedId, occurredAt) {
