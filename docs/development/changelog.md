@@ -73,9 +73,12 @@ Keep entries brief, clear and focused on meaningful changes.
 - Reusable UI components: Text, Stack, Surface, Card, Button
 - Home page now composed entirely from design system components
 
+- Self-hosted `Inter` and `Cormorant Garamond` variable fonts (no external CDN dependency)
+
 ### Fixed
 - App rendered a blank page because `<Routes>` was used outside a `<BrowserRouter>`
 - Header and Footer used hardcoded colours and spacing instead of design tokens
+- Heading and body fonts silently fell back to system fonts because the fonts were never loaded
 
 ### Removed
 - Vite starter CSS

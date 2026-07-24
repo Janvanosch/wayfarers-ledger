@@ -66,9 +66,10 @@ Completed:
 - Rebuilt the Home page (Hero, Quick Actions, Recent Journey) and the app shell (Header, Footer) to use the design system components and tokens exclusively, removing hardcoded colours and spacing.
 - Verified the app renders correctly and typechecks cleanly.
 
+- Self-hosted the `Inter` and `Cormorant Garamond` variable fonts (`src/assets/fonts`, loaded via `src/styles/fonts.css`) instead of depending on a Google Fonts CDN, in line with Offline First and Privacy First.
+
 Next:
 - Icons and Forms are still open Design System items; build them when a feature needs them rather than speculatively.
-- The `Inter` and `Cormorant Garamond` fonts are referenced in tokens but never loaded, so headings currently fall back to Georgia/system fonts. Needs a font-loading strategy (self-hosted, per Privacy/Offline-First principles — avoid a Google Fonts CDN dependency).
 - Begin Core Infrastructure: decide the offline storage approach (SQLite-in-browser vs. IndexedDB-backed repository) and record it as the project's first ADR before implementing.
 
 ---
