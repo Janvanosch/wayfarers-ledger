@@ -1,0 +1,65 @@
+# Changelog
+
+All notable changes to The Wayfarer's Ledger are documented here.
+
+The format is intentionally concise.
+
+---
+
+# Unreleased
+
+## Added
+
+- Initial repository structure
+- Project documentation structure
+- Project Bible v1.0
+- Development documentation
+- Feature-first project architecture
+- React + TypeScript + Vite foundation
+- React Router integration
+
+---
+
+# Version 0.1.0
+
+_Not yet released._
+
+---
+
+# Changelog Guidelines
+
+Each release should contain only the most important changes.
+
+Organise entries using the following sections where applicable:
+
+## Added
+
+New features.
+
+## Changed
+
+Changes to existing behaviour.
+
+## Fixed
+
+Bug fixes.
+
+## Removed
+
+Features that have been removed.
+
+## Deprecated
+
+Features scheduled for future removal.
+
+## Security
+
+Security-related improvements.
+
+---
+
+# Notes
+
+The changelog is intended for humans.
+
+Keep entries brief, clear and focused on meaningful changes.

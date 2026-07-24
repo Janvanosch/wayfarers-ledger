@@ -1,0 +1,156 @@
+# Keeper Log
+
+**Project:** The Wayfarer's Ledger
+
+**Status:** Active Development
+
+**Last Updated:** 2026-07-24
+
+---
+
+# Purpose
+
+The Keeper Log serves as the living memory of the project.
+
+Unlike the Project Bible, which defines timeless principles, the Keeper Log captures the project's current state.
+
+Every new development session should begin by reading this document.
+
+Its purpose is to answer one simple question:
+
+> "Where do we continue?"
+
+---
+
+# Current Milestone
+
+Foundation (v0.1.0)
+
+The project is currently establishing its technical foundation.
+
+Primary focus:
+
+- documentation
+- design system
+- reusable architecture
+- core infrastructure
+
+No production features are considered complete until this milestone has been finished.
+
+---
+
+# Current Status
+
+## Completed
+
+- Repository created
+- React project created
+- TypeScript configured
+- Vite configured
+- React Router configured
+- Feature-first folder structure established
+- Documentation structure completed
+- Project Bible v1.0 completed
+- Development documentation established
+
+---
+
+## In Progress
+
+Foundation milestone.
+
+---
+
+## Next Task
+
+Begin implementation of the Design System.
+
+The Design System should define:
+
+- colours
+- typography
+- spacing
+- buttons
+- cards
+- form controls
+- layout primitives
+
+Once complete, begin building the Home page using reusable components.
+
+---
+
+# Recent Decisions
+
+## Architecture
+
+- React
+- TypeScript
+- Vite
+- React Router
+
+---
+
+## Philosophy
+
+Offline-first.
+
+Privacy-first.
+
+Feature-first architecture.
+
+Documentation-first development.
+
+---
+
+## Documentation
+
+The Project Bible is considered stable.
+
+Development documents should evolve throughout the project.
+
+---
+
+# Known Issues
+
+None.
+
+---
+
+# Open Questions
+
+None.
+
+Questions that influence architecture or project direction should be recorded here until resolved.
+
+---
+
+# Next Session Checklist
+
+At the beginning of every development session:
+
+1. Read the Project Bible if major design decisions are expected.
+2. Read `current-milestone.md`.
+3. Read `keeper-log.md`.
+4. Continue the current milestone.
+5. Update this document before ending the session if significant progress has been made.
+
+---
+
+# Session Summary
+
+The repository now contains:
+
+- a complete Project Bible
+- a structured documentation system
+- a defined development workflow
+- a stable project architecture
+
+The project is ready to begin implementation of the Design System.
+
+---
+
+# Keeper's Notes
+
+The purpose of the Keeper Log is continuity.
+
+It exists so that future development sessions can resume quickly and confidently, without reconstructing project history from previous conversations.
