@@ -74,6 +74,33 @@ const MIGRATIONS = [
       `);
     },
   },
+  {
+    version: 4,
+    up(database) {
+      database.run(`
+        CREATE TABLE festivals (
+          id TEXT PRIMARY KEY,
+          name TEXT NOT NULL,
+          start_date TEXT,
+          end_date TEXT,
+          location TEXT,
+          weather TEXT,
+          notes TEXT,
+          cover_photo_id TEXT REFERENCES photos(id),
+          created_at TEXT NOT NULL,
+          updated_at TEXT NOT NULL,
+          deleted_at TEXT
+        );
+
+        CREATE TABLE gear_festivals (
+          gear_id TEXT NOT NULL REFERENCES gear(id),
+          festival_id TEXT NOT NULL REFERENCES festivals(id),
+          created_at TEXT NOT NULL,
+          PRIMARY KEY (gear_id, festival_id)
+        );
+      `);
+    },
+  },
 ];
 
 async function init() {

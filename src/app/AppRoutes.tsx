@@ -5,6 +5,8 @@ import GearListPage from "../pages/Gear/GearListPage";
 import GearDetailPage from "../pages/Gear/GearDetailPage";
 import MakerListPage from "../pages/Makers/MakerListPage";
 import MakerDetailPage from "../pages/Makers/MakerDetailPage";
+import JourneyPage from "../pages/Journey/JourneyPage";
+import FestivalDetailPage from "../pages/Journey/FestivalDetailPage";
 
 export default function AppRoutes() {
   return (
@@ -14,6 +16,8 @@ export default function AppRoutes() {
       <Route path="/gear/:id" element={<GearDetailPage />} />
       <Route path="/makers" element={<MakerListPage />} />
       <Route path="/makers/:id" element={<MakerDetailPage />} />
+      <Route path="/journey" element={<JourneyPage />} />
+      <Route path="/festivals/:id" element={<FestivalDetailPage />} />
     </Routes>
   );
 }

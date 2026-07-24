@@ -1,7 +1,8 @@
 const { ipcMain, dialog } = require("electron");
 const vault = require("./vault.cjs");
 const database = require("./database.cjs");
-const { wayfarers, photos, gear, makers } = require("./repositories.cjs");
+const { wayfarers, photos, gear, makers, festivals, gearFestivals } =
+  require("./repositories.cjs");
 const logger = require("./logger.cjs");
 
 const IMAGE_EXTENSIONS = ["jpg", "jpeg", "png", "webp", "gif"];
@@ -37,6 +38,11 @@ function withGearExtras(item) {
 function withMakerExtras(item) {
   if (!item) return item;
   return { ...item, logoPhotoFilename: photoFilename(item.logoPhotoId) };
+}
+
+function withFestivalExtras(item) {
+  if (!item) return item;
+  return { ...item, coverPhotoFilename: photoFilename(item.coverPhotoId) };
 }
 
 function getCurrentWayfarer() {
@@ -143,6 +149,52 @@ function registerIpcHandlers(getWindow) {
       .filter((item) => item.makerId === makerId)
       .map(withGearExtras),
   );
+
+  ipcMain.handle("festivals:list", () =>
+    festivals.findAll().map(withFestivalExtras),
+  );
+
+  ipcMain.handle("festivals:get", (_event, id) =>
+    withFestivalExtras(festivals.findById(id)),
+  );
+
+  ipcMain.handle("festivals:create", (_event, fields) => {
+    const { photoPath, ...rest } = fields;
+    const coverPhotoId = importPhotoIfProvided(photoPath);
+    return withFestivalExtras(festivals.create({ ...rest, coverPhotoId }));
+  });
+
+  ipcMain.handle("festivals:update", (_event, id, fields) => {
+    const { photoPath, ...rest } = fields;
+    if (photoPath) {
+      rest.coverPhotoId = importPhotoIfProvided(photoPath);
+    }
+    return withFestivalExtras(festivals.update(id, rest));
+  });
+
+  ipcMain.handle("festivals:gearFor", (_event, festivalId) => {
+    const gearIds = new Set(gearFestivals.gearIdsForFestival(festivalId));
+    return gear
+      .findAll()
+      .filter((item) => gearIds.has(item.id))
+      .map(withGearExtras);
+  });
+
+  ipcMain.handle("gear:festivalsFor", (_event, gearId) => {
+    const festivalIds = new Set(gearFestivals.festivalIdsForGear(gearId));
+    return festivals
+      .findAll()
+      .filter((item) => festivalIds.has(item.id))
+      .map(withFestivalExtras);
+  });
+
+  ipcMain.handle("gear:linkFestival", (_event, gearId, festivalId) => {
+    gearFestivals.link(gearId, festivalId);
+  });
+
+  ipcMain.handle("gear:unlinkFestival", (_event, gearId, festivalId) => {
+    gearFestivals.unlink(gearId, festivalId);
+  });
 
   logger.info("IPC handlers registered");
 }

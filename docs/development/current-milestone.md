@@ -67,7 +67,7 @@ Phase 2 of the roadmap.
 - [x] Gear Library (list, detail, quick-capture create, edit)
 - [x] Makers (their own entity, linked from Gear, with quick-create from the Gear form)
 - [ ] Outfit Library
-- [ ] Festival Library
+- [x] Journey hub page (`/journey`) with a working Festival Library (list, detail, quick-capture create, edit) and Gear↔Festival "Seen at" linking
 - [ ] Journal Entries
 - [ ] Timeline
 - [ ] Basic Search
@@ -86,19 +86,18 @@ than a single-feature demo.
 
 # Current Focus
 
-Gear and Makers are built and verified working end to end (real photos, real
-relationships, real persistence). Both list pages, detail pages, and the
-quick-capture forms follow the same pattern, which the next entities can
-reuse directly.
+Gear, Makers, and Festivals are built and verified working end to end (real
+photos, real relationships, real persistence), including the Gear↔Festival
+"Seen at" link — the Journey hub is no longer an isolated feature, it
+actually connects to Gear per the Bible's Cross-Linking principle.
 
 ---
 
 # Next Task
 
-Decide the next entity to build — Festivals is the strongest candidate next,
-since it would let Gear's "Journey" (which festivals a piece of gear has
-been to) start to take real shape, and Outfits reference both Gear and
-Festivals so benefits from Festivals existing first.
+Outfits is the next major entity, and now has both Gear and Festivals to
+reference (an Outfit is a combination of Gear, worn at a Festival). Journal
+Entries and Timeline are the remaining pieces of the Journey hub itself.
 
 ---
 

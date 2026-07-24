@@ -9,6 +9,7 @@ import Stack from "../../components/ui/Stack";
 import Button from "../../components/ui/Button";
 import Cover from "../../components/ui/Cover";
 import GearForm from "./GearForm";
+import FestivalTagPicker from "../../shared/components/FestivalTagPicker";
 
 import type { Gear, GearFields } from "../../types/ledger";
 
@@ -112,6 +113,11 @@ export default function GearDetailPage() {
                 </Stack>
               </Stack>
             )}
+
+            <Stack gap={3}>
+              <Heading level={3}>Seen at</Heading>
+              <FestivalTagPicker gearId={item.id} />
+            </Stack>
           </>
         )}
       </div>

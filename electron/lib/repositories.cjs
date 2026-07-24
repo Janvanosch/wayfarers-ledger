@@ -1,4 +1,5 @@
 const { createRepository } = require("./repository.cjs");
+const database = require("./database.cjs");
 
 // Additional repositories (festivals, outfits, makers, ...) are created the
 // same way, once those features are built and their tables migrated in.
@@ -49,4 +50,64 @@ const makers = createRepository("makers", "maker", [
   { js: "deletedAt", db: "deleted_at" },
 ]);
 
-module.exports = { wayfarers, photos, gear, makers };
+const festivals = createRepository("festivals", "festival", [
+  { js: "id", db: "id" },
+  { js: "name", db: "name" },
+  { js: "startDate", db: "start_date" },
+  { js: "endDate", db: "end_date" },
+  { js: "location", db: "location" },
+  { js: "weather", db: "weather" },
+  { js: "notes", db: "notes" },
+  { js: "coverPhotoId", db: "cover_photo_id" },
+  { js: "createdAt", db: "created_at" },
+  { js: "updatedAt", db: "updated_at" },
+  { js: "deletedAt", db: "deleted_at" },
+]);
+
+// gear_festivals is a plain many-to-many join table (no soft delete, no
+// single id), so it doesn't fit the generic repository pattern above.
+const gearFestivals = {
+  link(gearId, festivalId) {
+    const db = database.getDb();
+    db.run(
+      "INSERT OR IGNORE INTO gear_festivals (gear_id, festival_id, created_at) VALUES (?, ?, ?)",
+      [gearId, festivalId, new Date().toISOString()],
+    );
+    database.save();
+  },
+
+  unlink(gearId, festivalId) {
+    const db = database.getDb();
+    db.run(
+      "DELETE FROM gear_festivals WHERE gear_id = ? AND festival_id = ?",
+      [gearId, festivalId],
+    );
+    database.save();
+  },
+
+  festivalIdsForGear(gearId) {
+    const db = database.getDb();
+    const stmt = db.prepare(
+      "SELECT festival_id FROM gear_festivals WHERE gear_id = :gearId",
+    );
+    stmt.bind({ ":gearId": gearId });
+    const ids = [];
+    while (stmt.step()) ids.push(stmt.getAsObject().festival_id);
+    stmt.free();
+    return ids;
+  },
+
+  gearIdsForFestival(festivalId) {
+    const db = database.getDb();
+    const stmt = db.prepare(
+      "SELECT gear_id FROM gear_festivals WHERE festival_id = :festivalId",
+    );
+    stmt.bind({ ":festivalId": festivalId });
+    const ids = [];
+    while (stmt.step()) ids.push(stmt.getAsObject().gear_id);
+    stmt.free();
+    return ids;
+  },
+};
+
+module.exports = { wayfarers, photos, gear, makers, festivals, gearFestivals };

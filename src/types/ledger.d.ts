@@ -78,6 +78,31 @@ export interface MakerFields {
   logoPhotoPath?: string | null;
 }
 
+export interface Festival {
+  id: string;
+  name: string;
+  startDate: string | null;
+  endDate: string | null;
+  location: string | null;
+  weather: string | null;
+  notes: string | null;
+  coverPhotoId: string | null;
+  coverPhotoFilename: string | null;
+  createdAt: string;
+  updatedAt: string;
+  deletedAt: string | null;
+}
+
+export interface FestivalFields {
+  name: string;
+  startDate?: string | null;
+  endDate?: string | null;
+  location?: string | null;
+  weather?: string | null;
+  notes?: string | null;
+  photoPath?: string | null;
+}
+
 export interface LedgerApi {
   getStatus: () => Promise<LedgerStatus>;
   vault: {
@@ -92,6 +117,9 @@ export interface LedgerApi {
     get: (id: string) => Promise<Gear | null>;
     create: (fields: GearFields) => Promise<Gear>;
     update: (id: string, fields: Partial<GearFields>) => Promise<Gear>;
+    festivalsFor: (gearId: string) => Promise<Festival[]>;
+    linkFestival: (gearId: string, festivalId: string) => Promise<void>;
+    unlinkFestival: (gearId: string, festivalId: string) => Promise<void>;
   };
   makers: {
     list: () => Promise<Maker[]>;
@@ -99,6 +127,13 @@ export interface LedgerApi {
     create: (fields: MakerFields) => Promise<Maker>;
     update: (id: string, fields: Partial<MakerFields>) => Promise<Maker>;
     gearFor: (makerId: string) => Promise<Gear[]>;
+  };
+  festivals: {
+    list: () => Promise<Festival[]>;
+    get: (id: string) => Promise<Festival | null>;
+    create: (fields: FestivalFields) => Promise<Festival>;
+    update: (id: string, fields: Partial<FestivalFields>) => Promise<Festival>;
+    gearFor: (festivalId: string) => Promise<Gear[]>;
   };
 }
 

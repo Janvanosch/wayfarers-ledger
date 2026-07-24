@@ -84,12 +84,17 @@ Completed:
 - Fixed a real navigation gap the Wayfarer found: the Gear and Makers list pages had no way back to Home at all. Made the header title a permanent Home link instead of patching each page individually.
 - Verified everything for real: added an actual piece of gear with a real photo, confirmed the file landed in the Vault's `Photos` folder and the row in the `.ledger` file; created a Maker from the Gear form, gave it a website and logo, and confirmed the `gear.maker_id` relationship by reading it straight out of the database.
 
+- Jan asked whether "Journey" was ever meant to replace "Festival" as a term. Checked the actual `docs/project-bible/` files (which had evolved further than the text originally pasted into this chat) and confirmed: Festival is unchanged as a concept, but Chapter 3's navigation groups it under a top-level "Journey" section alongside Timeline, Journal Entries, Memories, and Photos — the way "Gear" is the umbrella for Gear items, Makers, and Maintenance. Decided, with Jan, to build a real `/journey` hub page now rather than a flat "Festivals" button, so Timeline and Journal Entries can slot into the same page later without restructuring navigation again.
+- Built Festivals: `festivals` table + `gear_festivals` many-to-many join table (migration 4), a `festivals` IPC API, and `JourneyPage`/`FestivalDetailPage`/`FestivalForm` (name, dates, location, weather, notes, banner photo).
+- Closed the loop between Gear and Festivals rather than leaving them as parallel, disconnected features: added a "Seen at" section to the Gear detail page (`FestivalTagPicker`) so a piece of Gear can be tagged with the Festivals it's been to, with quick "add a new Festival" inline, matching the same pattern as `MakerPicker`.
+- Renamed the Home quick action from "Festivals" to "Journey" to match the real navigation term, and pointed it at `/journey`.
+- Verified end to end: created a real Festival, confirmed its row in the `.ledger` file including the banner photo; linked it to the "Beige Pants" Gear item and confirmed the `gear_festivals` join row directly in the database.
+
 Next:
 - Icons and further Forms polish are still open Design System items; build them when a feature needs them rather than speculatively.
 - Gear History, Gear Maintenance, Tags, and Archive Gear (soft delete UI) remain open Gear backlog items.
-- Decide the next feature — Outfits or Festivals are the next natural candidates per the Phase 2 roadmap, and Festivals would let Gear's "Journey" (seen at which festivals) start to take shape.
-
----
+- Timeline and Journal Entries are the remaining pieces of the Journey hub. Journal Entries would let Festivals gain real "Memories," and Timeline would need a design decision on how it's generated from the other entities rather than manually maintained.
+- Outfits is the other major Phase 2 entity, and now has both Gear and Festivals to reference.
 
 ## In Progress
 

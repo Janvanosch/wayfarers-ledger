@@ -8,8 +8,8 @@ import Button from "../../../components/ui/Button";
 
 const actions = [
   { label: "View Gear", icon: "🎒", to: "/gear" },
+  { label: "Journey", icon: "🗺", to: "/journey" },
   { label: "Packing Lists", icon: "📦", to: null },
-  { label: "Festivals", icon: "🗺", to: null },
 ];
 
 export default function QuickActions() {

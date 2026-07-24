@@ -76,12 +76,12 @@ The backlog is intentionally organised by functional area rather than priority.
 
 # Festivals
 
-- [ ] Festival Library
-- [ ] Festival Details
+- [x] Festival Library
+- [x] Festival Details
 - [ ] Festival Journal
 - [ ] Festival Gallery
 - [ ] Festival Timeline
-- [ ] Weather Notes
+- [x] Weather Notes
 
 ---
 

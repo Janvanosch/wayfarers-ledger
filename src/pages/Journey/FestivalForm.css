@@ -1,0 +1,9 @@
+.festival-form {
+  width: 100%;
+}
+
+.festival-form-field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
